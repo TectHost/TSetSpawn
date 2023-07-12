@@ -1,0 +1,13 @@
+Config:
+    join-message: true
+    join-message-text: "&6&lWelcome to the server %player%! &f| &5TSetSpawn"
+    go-spawn: true
+    Translate:
+      version: "&5TSetSpawn &e> &7The version is: %version%"
+      spawn-not-placed: "&5TSetSpawn &e> &cThe spawn does not exist"
+      console: "&5TSetSpawn &e> &7You cannot send commands from the console"
+      spawn-placed: "&5TSetSpawn &e> &aSpawn placed"
+      reload: "&5TSetSpawn &e> &aReloaded"
+      unknown-command: "&5TSetSpawn &e> &cUnknown command"
+      help: "&5TSetSpawn &e> &fUse the command &a/tsetspawn spawn &fto go to the spawn"
+      

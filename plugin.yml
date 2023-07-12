@@ -1,0 +1,11 @@
+main: minealex.tsetspawn.TSetSpawn
+version: 1.0
+name: TSetSpawn
+
+commands:
+  tsetspawn:
+    description: Help command
+  spawn:
+    description: Go to the spawn
+  setspawn:
+    description: Set the spawn
