@@ -1,5 +1,5 @@
 # TSetSpawn
-Simple SetSpawn plugin 1.8+
+Simple SetSpawn plugin
 
 # Features
 - SetSpawn
