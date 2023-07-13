@@ -5,6 +5,8 @@ Simple SetSpawn plugin
 - SetSpawn
 - Spawn
 - Spawn on enter
+- Welcome messages
+- Join/Quit messages
 
 # Commands
 - /setspawn
@@ -14,7 +16,9 @@ Simple SetSpawn plugin
 - /tsetspawn version
 
 # Permissions
-- None
+- tsetspawn.reload
+- tsetspawn.version
+- tsetspawn.setspawn
 
 # Dependencies
 - None
