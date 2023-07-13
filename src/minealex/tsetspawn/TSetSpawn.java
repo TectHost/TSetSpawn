@@ -12,6 +12,8 @@ import minealex.tsetspawn.commands.Commands;
 import minealex.tsetspawn.commands.SetSpawn;
 import minealex.tsetspawn.commands.Spawn;
 import minealex.tsetspawn.events.Enter;
+import minealex.tsetspawn.events.Join;
+import minealex.tsetspawn.events.Welcome;
 
 public class TSetSpawn extends JavaPlugin{
 	public String rutaConfig;
@@ -39,6 +41,8 @@ public class TSetSpawn extends JavaPlugin{
 	public void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new Enter(this), this);
+		pm.registerEvents(new Join(this), this);
+		pm.registerEvents(new Welcome(this), this);
 	}
 	
 	public void registerConfig() {

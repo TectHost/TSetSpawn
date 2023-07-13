@@ -40,6 +40,8 @@ public class Spawn implements CommandExecutor{
 					World world = plugin.getServer().getWorld(config.getString("Config.Spawn.world"));
 					Location l = new Location(world, x, y, z, yaw, pitch);
 					jugador.teleport(l);
+					String onspawn = "Config.Translate.spawn";
+					jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(onspawn)));
 					return true;
 				}else {
 					String spawnno = "Config.Translate.spawn-not-placed";

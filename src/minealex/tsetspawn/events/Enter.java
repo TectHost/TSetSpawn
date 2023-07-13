@@ -36,9 +36,9 @@ public class Enter implements Listener{
 			}
 		}
 		
-		String path = "Config.join-message";
+		String path = "Config.enter-message";
 		if(config.getString(path).equals("true")) {
-			String texto = "Config.join-message-text";
+			String texto = "Config.enter-message-text";
 			jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(texto)).replaceAll("%player%", jugador.getName()));
 		}
 		return;

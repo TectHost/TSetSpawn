@@ -27,17 +27,30 @@ public class Commands implements CommandExecutor{
 		}else {
 			Player jugador = (Player) sender;
 			FileConfiguration config = plugin.getConfig();
-			if(args.length > 0) {
-				if(args[0].equalsIgnoreCase("version")) {
-						String version = "Config.Translate.version";
-						jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(version)).replaceAll("%version%", plugin.version));
-					return true;
-				}
-				else if(args[0].equalsIgnoreCase("reload")) {
-					plugin.reloadConfig();
-					String reload = "Config.Translate.reload";
-					jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(reload)));
-				}
+			if (args.length > 0) {
+			    if (args[0].equalsIgnoreCase("version")) {
+			        String version = "Config.Translate.version";
+			        if (jugador.hasPermission("tsetspawn.version")) {
+			            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(version)).replaceAll("%version%", plugin.version));
+			            return true;
+			        } else {
+			        	String noperms = "Config.Translate.no-permission";
+			        	jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(noperms)));
+			            return true;
+			        }
+			    }
+			    else if (args[0].equalsIgnoreCase("reload")) {
+			        if (jugador.hasPermission("tsetspawn.reload")) {
+			            plugin.reloadConfig();
+			            String reload = "Config.Translate.reload";
+			            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(reload)));
+			            return true;
+			        } else {
+			        	String noperms = "Config.Translate.no-permission";
+			        	jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(noperms)));
+			            return true;
+			        }
+			    }
 				else {
 					String unknown = "Config.Translate.unknown-command";
 					jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(unknown)));

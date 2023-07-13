@@ -1,7 +1,13 @@
 Config:
-    join-message: true
-    join-message-text: "&6&lWelcome to the server %player%! &f| &5TSetSpawn"
+    enter-message: true
+    enter-message-text: "&6&lWelcome to the server %player%! &f| &5TSetSpawn"
     go-spawn: true
+    join: true
+    join-message: "&5TSetSpawn &e> &f%player% has joined."
+    quit: true
+    quit-message: "&5TSetSpawn &e> &f%player% has left."
+    welcome: true
+    welcome-message: "&5TSetSpawn &e> &f%player% entered for the first time!"
     Translate:
       version: "&5TSetSpawn &e> &7The version is: %version%"
       spawn-not-placed: "&5TSetSpawn &e> &cThe spawn does not exist"
@@ -9,5 +15,6 @@ Config:
       spawn-placed: "&5TSetSpawn &e> &aSpawn placed"
       reload: "&5TSetSpawn &e> &aReloaded"
       unknown-command: "&5TSetSpawn &e> &cUnknown command"
-      help: "&5TSetSpawn &e> &fUse the command &a/tsetspawn spawn &fto go to the spawn"
-      
+      help: "&5TSetSpawn &e> &fUse the command &a/spawn &fto go to the spawn"
+      spawn: "&5TSetSpawn &e> &fYou have been teleported"
+      no-permission: "&5TSetSpawn &e> &cYou do not have permissions"
