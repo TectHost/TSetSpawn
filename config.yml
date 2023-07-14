@@ -8,6 +8,8 @@ Config:
     quit-message: "&5TSetSpawn &e> &f%player% has left."
     welcome: true
     welcome-message: "&5TSetSpawn &e> &f%player% entered for the first time!"
+    cooldown-time: 5
+    wait-time: 5
     Translate:
       version: "&5TSetSpawn &e> &7The version is: %version%"
       spawn-not-placed: "&5TSetSpawn &e> &cThe spawn does not exist"
@@ -18,3 +20,5 @@ Config:
       help: "&5TSetSpawn &e> &fUse the command &a/spawn &fto go to the spawn"
       spawn: "&5TSetSpawn &e> &fYou have been teleported"
       no-permission: "&5TSetSpawn &e> &cYou do not have permissions"
+      cooldown-message: "&5TSetSpawn &e> &cYou have to wait &e%time% &cseconds before running this command again!"
+      wait-time-message: "&5TSetSpawn &e> &fTeleporting..."

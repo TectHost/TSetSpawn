@@ -28,31 +28,27 @@ public class SetSpawn implements CommandExecutor{
 		}else {
 			Player jugador = (Player) sender;
 			FileConfiguration config = plugin.getConfig();
-			if (args.length > 0) {
-			    if (jugador.hasPermission("tsetspawn.setspawn")) {
-			        Location l = jugador.getLocation();
-			        double X = l.getX();
-			        double Y = l.getY();
-			        double Z = l.getZ();
-			        String world = l.getWorld().getName();
-			        float yaw = l.getYaw();
-			        float pitch = l.getPitch();
-			        config.set("Config.Spawn.x", X);
-			        config.set("Config.Spawn.y", Y);
-			        config.set("Config.Spawn.z", Z);
-			        config.set("Config.Spawn.world", world);
-			        config.set("Config.Spawn.yaw", yaw);
-			        config.set("Config.Spawn.pitch", pitch);
-			        plugin.saveConfig();
-			        String spawncolocated = "Config.Translate.spawn-placed";
-			        jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(spawncolocated)));
-			        return true;
-			    } else {
-			    	String noperms = "Config.Translate.no-permission";
-		        	jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(noperms)));
-			        return true;
-			    }
-			}
+			if(args.length > 0) {
+				}
+			if (jugador.hasPermission("tsetspawn.setspawn")) {
+				Location l = jugador.getLocation();
+				double X = l.getX();
+				double Y = l.getY();
+				double Z = l.getZ();
+				String world = l.getWorld().getName();
+				float yaw = l.getYaw();
+				float pitch = l.getPitch();
+				config.set("Config.Spawn.x", X);
+				config.set("Config.Spawn.y", Y);
+				config.set("Config.Spawn.z", Z);
+				config.set("Config.Spawn.world", world);
+				config.set("Config.Spawn.yaw", yaw);
+				config.set("Config.Spawn.pitch", pitch);
+				plugin.saveConfig();
+				String spawncolocated = "Config.Translate.spawn-placed";
+				jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(spawncolocated)));
+				return true;
+				}
 		}
 		return false;
 	}
