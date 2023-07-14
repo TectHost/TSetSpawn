@@ -7,6 +7,8 @@ Simple SetSpawn plugin
 - Spawn on enter
 - Welcome messages
 - Join/Quit messages
+- Cooldown
+- Wait-time
 
 # Commands
 - /setspawn
