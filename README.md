@@ -9,6 +9,9 @@ Simple SetSpawn plugin
 - Join/Quit messages
 - Cooldown
 - Wait-time
+- Particles
+- First Join Spawn
+- Void Teleport
 
 # Commands
 - /setspawn
