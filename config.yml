@@ -10,7 +10,6 @@ Config:
     welcome-message: "&5TSetSpawn &e> &f%player% entered for the first time!"
     cooldown-time: 5
     wait-time: 5
-    enable-first-time-teleport: true
     enable-void-teleport: true
     Translate:
       version: "&5TSetSpawn &e> &7The version is: %version%"
@@ -24,10 +23,14 @@ Config:
       no-permission: "&5TSetSpawn &e> &cYou do not have permissions"
       cooldown-message: "&5TSetSpawn &e> &cYou have to wait &e%time% &cseconds before running this command again!"
       wait-time-message: "&5TSetSpawn &e> &fTeleporting..."
-      first-time-teleport: "&5TSetSpawn &e> &fWelcome to the server %player%!"
       void-teleport-message: "&5TSetSpawn &e> &fTeleported to the Spawn"
     Particles:
       enabled: true
       radius: 1.5
       amount: 50
       particle-type: MOBSPAWNER_FLAMES
+    Sound:
+      enable-sound: true
+      sound-type: LEVEL_UP
+      volume: 1.0
+      pitch: 1.0
