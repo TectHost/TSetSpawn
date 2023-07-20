@@ -10,7 +10,7 @@ Simple SetSpawn plugin
 - Cooldown
 - Wait-time
 - Particles
-- First Join Spawn
+- Sound on spawn
 - Void Teleport
 
 # Commands
