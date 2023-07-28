@@ -31,6 +31,6 @@ Config:
       particle-type: MOBSPAWNER_FLAMES
     Sound:
       enable-sound: true
-      sound-type: LEVEL_UP
+      sound-type: "LEVEL_UP"
       volume: 1.0
       pitch: 1.0

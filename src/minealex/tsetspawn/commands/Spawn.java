@@ -120,12 +120,21 @@ public class Spawn implements CommandExecutor, Listener {
         // Reproducir el sonido si está habilitado en la configuración
         boolean enableSound = config.getBoolean("Config.Sound.enable-sound", true);
         if (enableSound) {
-            String soundTypeString = config.getString("Config.Sound.sound-type", "ENTITY_PLAYER_LEVEL_UP");
+            String soundTypeString = config.getString("Config.Sound.sound-type", "LEVEL_UP");
+
+            Sound soundType;
+            try {
+                soundType = Sound.valueOf(soundTypeString);
+            } catch (IllegalArgumentException e) {
+                // Use NOTE_PLING as a fallback sound for Bukkit 1.8.8
+                soundType = Sound.valueOf("NOTE_PLING");
+            }
+
             float volume = (float) config.getDouble("Config.Sound.volume", 1.0);
             float pitch = (float) config.getDouble("Config.Sound.pitch", 1.0);
 
             // Reproducir el sonido para el jugador
-            player.getWorld().playSound(player.getLocation(), Sound.valueOf(soundTypeString), volume, pitch);
+            player.getWorld().playSound(player.getLocation(), soundType, volume, pitch);
         }
     }
 
