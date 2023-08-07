@@ -11,6 +11,7 @@ Config:
     cooldown-time: 5
     wait-time: 5
     enable-void-teleport: true
+    cancel-on-move: true
     Translate:
       version: "&5TSetSpawn &e> &7The version is: %version%"
       spawn-not-placed: "&5TSetSpawn &e> &cThe spawn does not exist"
@@ -24,6 +25,8 @@ Config:
       cooldown-message: "&5TSetSpawn &e> &cYou have to wait &e%time% &cseconds before running this command again!"
       wait-time-message: "&5TSetSpawn &e> &fTeleporting..."
       void-teleport-message: "&5TSetSpawn &e> &fTeleported to the Spawn"
+      move-cancel-message: "&5TSetSpawn &e> &fTeleport canceled because you have moved."
+      disconnect-message: "&5TSetSpawn &e> &fTeleport canceled because you disconnected."
     Particles:
       enabled: true
       radius: 1.5

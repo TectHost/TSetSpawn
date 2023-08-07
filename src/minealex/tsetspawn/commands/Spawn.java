@@ -20,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class Spawn implements CommandExecutor, Listener {
     private Plugin plugin;
     private Map<String, Long> cooldowns = new HashMap<>();
@@ -64,7 +65,7 @@ public class Spawn implements CommandExecutor, Listener {
         final Location l = new Location(world, x, y, z, yaw, pitch);
 
         int waitTime = config.getInt("Config.wait-time", 5);
-        int delayTicks = waitTime * 20;
+        final int delayTicks = waitTime * 20;
 
         String playerName = jugador.getName();
         long currentTime = System.currentTimeMillis();
@@ -85,33 +86,63 @@ public class Spawn implements CommandExecutor, Listener {
         String countdownMessage = "Config.Translate.wait-time-message";
         jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(countdownMessage)));
 
-        new BukkitRunnable() {
+        final Location originalLocation = jugador.getLocation();
+        final long startTime = System.currentTimeMillis();
+        final boolean[] teleported = {false}; // Usamos un array para almacenar el estado del teletransporte
+
+        BukkitRunnable teleportTask = new BukkitRunnable() {
             @Override
             public void run() {
-                boolean particlesEnabled = config.getBoolean("Config.Particles.enabled", true);
+                // Check if the player is online
+                boolean online = jugador.isOnline();
 
-                if (particlesEnabled) {
-                    double radius = config.getDouble("Config.Particles.radius", 1.5);
-                    int particles = config.getInt("Config.Particles.amount", 50);
-                    String particleType = config.getString("Config.Particles.particle-type", "MOBSPAWNER_FLAMES");
+                // Check if the player has moved during the wait time
+                boolean hasMoved = !jugador.getLocation().equals(originalLocation);
 
-                    for (int i = 0; i < particles; i++) {
-                        double angle = 2 * Math.PI * i / particles;
-                        double offsetX = Math.cos(angle) * radius;
-                        double offsetZ = Math.sin(angle) * radius;
-                        Location particleLocation = l.clone().add(offsetX, 0.5, offsetZ);
-                        jugador.getWorld().playEffect(particleLocation, Effect.valueOf(particleType), 0);
+                int delayTime = config.getInt("Config.wait-time", 5); // Obtenemos el valor correcto de wait-time desde la configuración
+                int delayTicksValue = delayTime * 20; // Calculamos el valor de delayTicksValue
+
+                if (online && !teleported[0] && !hasMoved && (System.currentTimeMillis() - startTime) >= (delayTicksValue * 50)) {
+                    boolean particlesEnabled = config.getBoolean("Config.Particles.enabled", true);
+
+                    if (particlesEnabled) {
+                        double radius = config.getDouble("Config.Particles.radius", 1.5);
+                        int particles = config.getInt("Config.Particles.amount", 50);
+                        String particleType = config.getString("Config.Particles.particle-type", "MOBSPAWNER_FLAMES");
+
+                        for (int i = 0; i < particles; i++) {
+                            double angle = 2 * Math.PI * i / particles;
+                            double offsetX = Math.cos(angle) * radius;
+                            double offsetZ = Math.sin(angle) * radius;
+                            Location particleLocation = l.clone().add(offsetX, 0.5, offsetZ);
+                            jugador.getWorld().playEffect(particleLocation, Effect.valueOf(particleType), 0);
+                        }
                     }
+
+                    // Reproducir el sonido para el jugador justo antes de teletransportar
+                    playTeleportSound(jugador);
+
+                    jugador.teleport(l);
+                    String onSpawn = "Config.Translate.spawn";
+                    jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(onSpawn)));
+
+                    teleported[0] = true; // Marcamos que el teletransporte ha sido realizado
+                    this.cancel(); // Detenemos el BukkitRunnable para evitar que se repita
+                } else if (!online) {
+                    // El jugador ya no está en línea, se puede considerar cancelado
+                	String disconnectMessage = config.getString("Config.Translate.disconnect-message", "&5TSetSpawn &e> &fTeleport canceled because you disconnected.");
+                    jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', disconnectMessage));
+                    this.cancel(); // Detenemos el BukkitRunnable si el jugador se desconecta
+                } else if (hasMoved && config.getBoolean("Config.cancel-on-move", true)) {
+                    // El jugador se ha movido y la cancelación por movimiento está habilitada
+                	String moveCancelMessage = config.getString("Config.Translate.move-cancel-message", "&5TSetSpawn &e> &fTeleport canceled because you have moved.");
+                    jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', moveCancelMessage));
+                    this.cancel(); // Detenemos el BukkitRunnable si el jugador se mueve
                 }
-
-                // Reproducir el sonido para el jugador justo antes de teletransportar
-                playTeleportSound(jugador);
-
-                jugador.teleport(l);
-                String onSpawn = "Config.Translate.spawn";
-                jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(onSpawn)));
             }
-        }.runTaskLater(plugin, delayTicks);
+        };
+
+        teleportTask.runTaskTimer(plugin, 0, 1); // Ejecutamos el BukkitRunnable cada tick
 
         return true;
     }
