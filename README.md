@@ -12,6 +12,7 @@ Simple SetSpawn plugin
 - Particles
 - Sound on spawn
 - Void Teleport
+- Cancel teleport on move
 
 # Commands
 - /setspawn
