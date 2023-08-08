@@ -13,6 +13,8 @@ Simple SetSpawn plugin
 - Sound on spawn
 - Void Teleport
 - Cancel teleport on move
+- Death to spawn
+- Keep inventory
 
 # Commands
 - /setspawn
