@@ -12,6 +12,8 @@ Config:
     wait-time: 5
     enable-void-teleport: true
     cancel-on-move: true
+    death-teleport: true
+    drop-items-on-death: true
     Translate:
       version: "&5TSetSpawn &e> &7The version is: %version%"
       spawn-not-placed: "&5TSetSpawn &e> &cThe spawn does not exist"

@@ -14,6 +14,7 @@ import minealex.tsetspawn.commands.Spawn;
 import minealex.tsetspawn.events.Enter;
 import minealex.tsetspawn.events.Join;
 import minealex.tsetspawn.events.Welcome;
+import minealex.tsetspawn.events.Death;
 
 public class TSetSpawn extends JavaPlugin{
 	public String rutaConfig;
@@ -43,6 +44,7 @@ public class TSetSpawn extends JavaPlugin{
 		pm.registerEvents(new Enter(this), this);
 		pm.registerEvents(new Join(this), this);
 		pm.registerEvents(new Welcome(this), this);
+		pm.registerEvents(new Death(this), this);
 	}
 	
 	public void registerConfig() {
