@@ -1,5 +1,5 @@
 # TSetSpawn
-Simple SetSpawn plugin
+Advanced SetSpawn plugin
 
 # Features
 - SetSpawn
@@ -15,6 +15,7 @@ Simple SetSpawn plugin
 - Cancel teleport on move
 - Death to spawn
 - Keep inventory
+- PlaceholderAPI Expansion
 
 # Commands
 - /setspawn
@@ -28,5 +29,8 @@ Simple SetSpawn plugin
 - tsetspawn.version
 - tsetspawn.setspawn
 
+# Placeholders
+- %tsetspawn_spawn%
+
 # Dependencies
-- None
+- PlaceholderAPI
