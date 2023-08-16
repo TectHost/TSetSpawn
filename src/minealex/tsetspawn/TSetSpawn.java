@@ -8,6 +8,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import minealex.tsetspawn.placeholders.Placeholders;
 import minealex.tsetspawn.commands.Commands;
 import minealex.tsetspawn.commands.SetSpawn;
 import minealex.tsetspawn.commands.Spawn;
@@ -27,6 +28,9 @@ public class TSetSpawn extends JavaPlugin{
 		registerCommands();
 		registerEvents();
 		registerConfig();
+		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new Placeholders(this).register();
+        }
 	}
 	
 	public void onDisable() {
