@@ -46,8 +46,8 @@ public class Commands implements CommandExecutor{
 			            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(reload)));
 			            return true;
 			        } else {
-			        	String noperms = "Config.Translate.no-permission";
-			        	jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(noperms)));
+			            String noperms = "Config.Translate.no-permission";
+			            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(noperms)));
 			            return true;
 			        }
 			    }

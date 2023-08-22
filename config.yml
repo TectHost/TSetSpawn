@@ -8,7 +8,9 @@ Config:
     quit-message: "&5TSetSpawn &e> &f%player% has left."
     welcome: true
     welcome-message: "&5TSetSpawn &e> &f%player% entered for the first time!"
+    # cooldown-time is for time between teleport and teleport
     cooldown-time: 5
+    # wait-time is for time to teleport to spawn
     wait-time: 5
     enable-void-teleport: true
     cancel-on-move: true
@@ -30,12 +32,13 @@ Config:
       move-cancel-message: "&5TSetSpawn &e> &fTeleport canceled because you have moved."
       disconnect-message: "&5TSetSpawn &e> &fTeleport canceled because you disconnected."
     Particles:
-      enabled: true
+      enabled: false
       radius: 1.5
       amount: 50
       particle-type: MOBSPAWNER_FLAMES
     Sound:
-      enable-sound: true
+      enable-sound: false
       sound-type: "LEVEL_UP"
       volume: 1.0
       pitch: 1.0
+      

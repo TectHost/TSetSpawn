@@ -1,5 +1,5 @@
 main: minealex.tsetspawn.TSetSpawn
-version: 1.7
+version: 1.9
 name: TSetSpawn
 
 commands:

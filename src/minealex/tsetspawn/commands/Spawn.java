@@ -103,7 +103,7 @@ public class Spawn implements CommandExecutor, Listener {
                 int delayTicksValue = delayTime * 20; // Calculamos el valor de delayTicksValue
 
                 if (online && !teleported[0] && !hasMoved && (System.currentTimeMillis() - startTime) >= (delayTicksValue * 50)) {
-                    boolean particlesEnabled = config.getBoolean("Config.Particles.enabled", true);
+                    boolean particlesEnabled = config.getBoolean("Config.Particles.enabled", false);
 
                     if (particlesEnabled) {
                         double radius = config.getDouble("Config.Particles.radius", 1.5);
@@ -149,7 +149,7 @@ public class Spawn implements CommandExecutor, Listener {
 
     private void playTeleportSound(Player player) {
         // Reproducir el sonido si está habilitado en la configuración
-        boolean enableSound = config.getBoolean("Config.Sound.enable-sound", true);
+        boolean enableSound = config.getBoolean("Config.Sound.enable-sound", false);
         if (enableSound) {
             String soundTypeString = config.getString("Config.Sound.sound-type", "LEVEL_UP");
 
