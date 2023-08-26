@@ -115,6 +115,9 @@ public class Spawn implements CommandExecutor, Listener {
     }
 
     private void executeTeleport(Player jugador, Location l) {
+        // Elimina al jugador de la lista de espera antes de teletransportarlo
+        cooldowns.remove(jugador.getName());
+
         boolean particlesEnabled = config.getBoolean("Config.Particles.enabled", false);
 
         if (particlesEnabled) {
@@ -163,13 +166,36 @@ public class Spawn implements CommandExecutor, Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (enableVoidTeleport) {
-            Player jugador = event.getPlayer();
-            Location location = jugador.getLocation();
-            if (location.getY() < 0) {
-                jugador.teleport(getSpawnLocationFromConfig());
-                jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', voidTeleportMessage));
-            }
+        Player jugador = event.getPlayer();
+        Location location = jugador.getLocation();
+
+        // Verificar si el jugador está en la lista de espera para el teletransporte
+        if (cooldowns.containsKey(jugador.getName())) {
+            // Cancelar la cuenta regresiva
+            Bukkit.getScheduler().cancelTasks(plugin);
+            // Eliminar al jugador de la lista de espera
+            cooldowns.remove(jugador.getName());
+
+            // Obtener el mensaje personalizable del archivo de configuración
+            String cancelMessage = config.getString("Config.Translate.move-cancel-movement", "&5TSetSpawn &e> &fTeleport canceled because you have moved.");
+            
+            // Enviar el mensaje al jugador
+            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', cancelMessage));
+        }
+
+        if (enableVoidTeleport && location.getY() < 0) {
+            // Teletransportar al jugador al spawn
+            Location spawnLocation = getSpawnLocationFromConfig();
+            jugador.teleport(spawnLocation);
+
+            // Restablecer la distancia de caída del jugador a cero para evitar daños
+            jugador.setFallDistance(0);
+
+            // Obtener el mensaje personalizable del archivo de configuración
+            String voidTeleportMessage = config.getString("Config.Translate.void-teleport-message", "&5TSetSpawn &e> &fTeleported to the Spawn");
+
+            // Enviar el mensaje al jugador
+            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', voidTeleportMessage));
         }
     }
 
