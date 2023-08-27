@@ -30,6 +30,8 @@ public class Spawn implements CommandExecutor, Listener {
     private String voidTeleportMessage;
     private FileConfiguration config;
     private Map<String, Location> teleportLocations = new HashMap<>();
+    private Map<String, Boolean> hasTeleported = new HashMap<>();
+    private Map<String, Long> teleportLocationTimes = new HashMap<>();
 
     public Spawn(Plugin plugin) {
         this.plugin = plugin;
@@ -70,6 +72,7 @@ public class Spawn implements CommandExecutor, Listener {
         // Guardar la ubicación original del jugador aquí
         Location originalLocation = jugador.getLocation().clone();
         teleportLocations.put(jugador.getName(), originalLocation);
+        teleportLocationTimes.put(jugador.getName(), System.currentTimeMillis());
 
         int waitTime = config.getInt("Config.Wait-time.time", 5);
         final int delayTicks = waitTime * 20;
@@ -172,24 +175,46 @@ public class Spawn implements CommandExecutor, Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
     	Player jugador = event.getPlayer();
-    	Location location = jugador.getLocation();
-        
-     // Verificar si el jugador está en la lista de espera para el teletransporte
+        Location location = jugador.getLocation();
+
+        // Verificar si el jugador ha sido teletransportado recientemente
+        if (hasTeleported.containsKey(jugador.getName()) && hasTeleported.get(jugador.getName())) {
+            // Si ha sido teletransportado, no hagas nada en este evento y restablece la variable
+            hasTeleported.put(jugador.getName(), false);
+            return;
+        }
+
+        // Verificar si el jugador está en la lista de espera para el teletransporte
         if (teleportLocations.containsKey(jugador.getName())) {
-            // Comprobar si la opción cancel-on-move está habilitada
-            boolean cancelOnMove = config.getBoolean("Config.Cancel-on-move.enabled", true);
+            // Obtener el tiempo actual
+            long currentTime = System.currentTimeMillis();
 
-            if (cancelOnMove) {
-                // Obtener la ubicación original del jugador (guardada cuando se inició la cuenta regresiva)
-                Location originalLocation = teleportLocations.get(jugador.getName());
-                Location currentLocation = event.getTo();
+            // Obtener el tiempo en que se guardó la ubicación original
+            long savedTime = teleportLocationTimes.get(jugador.getName());
 
+            // Obtener el tiempo de espera desde la configuración
+            int waitTime = config.getInt("Config.Wait-time.time", 5);
+
+            // Calcular el tiempo límite después del cual no se mostrará el mensaje
+            long timeLimit = savedTime + (waitTime * 1000);
+
+            // Comprobar si ha pasado el tiempo límite
+            if (currentTime > timeLimit) {
+                // Si ha pasado el tiempo límite, eliminar al jugador de la lista de espera
+                teleportLocations.remove(jugador.getName());
+                teleportLocationTimes.remove(jugador.getName());
+            } else {
+                // Si no ha pasado el tiempo límite, verificar si el jugador se ha movido y cancelar si es necesario
                 // Configurar las coordenadas y ángulos que deben ser verificados
                 boolean checkX = config.getBoolean("Config.Cancel-on-move.check-x", true);
                 boolean checkY = config.getBoolean("Config.Cancel-on-move.check-y", true);
                 boolean checkZ = config.getBoolean("Config.Cancel-on-move.check-z", true);
-                boolean checkYaw = config.getBoolean("Config.Cancel-on-move.check-yaw", true);
-                boolean checkPitch = config.getBoolean("Config.Cancel-on-move.check-pitch", true);
+                boolean checkYaw = config.getBoolean("Config.Cancel-on-move.check-yaw", false);
+                boolean checkPitch = config.getBoolean("Config.Cancel-on-move.check-pitch", false);
+
+                // Obtener la ubicación original del jugador (guardada cuando se inició la cuenta regresiva)
+                Location originalLocation = teleportLocations.get(jugador.getName());
+                Location currentLocation = event.getTo();
 
                 // Calcular la distancia en las coordenadas y ángulos habilitados
                 double dx = checkX ? Math.abs(originalLocation.getX() - currentLocation.getX()) : 0;
@@ -213,6 +238,7 @@ public class Spawn implements CommandExecutor, Listener {
                     Bukkit.getScheduler().cancelTasks(plugin);
                     // Eliminar al jugador de la lista de espera
                     teleportLocations.remove(jugador.getName());
+                    teleportLocationTimes.remove(jugador.getName());
 
                     // Obtener el mensaje personalizable del archivo de configuración
                     String cancelMessage = config.getString("Config.Cancel-on-move.message", "&5TSetSpawn &e> &cTeleport canceled because you have moved.");

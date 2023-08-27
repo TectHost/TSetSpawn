@@ -42,6 +42,7 @@ public class Commands implements CommandExecutor{
 			    else if (args[0].equalsIgnoreCase("reload")) {
 			        if (jugador.hasPermission("tsetspawn.reload")) {
 			            plugin.reloadConfig();
+			            plugin.getConfig();
 			            String reload = "Config.Translate.reload";
 			            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(reload)));
 			            return true;

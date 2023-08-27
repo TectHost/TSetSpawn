@@ -1,6 +1,7 @@
 Config:
     enter-message: true
     enter-message-text: "&6&lWelcome to the server %player%! &f| &5TSetSpawn"
+    # Go spawn on enter to the server
     go-spawn: true
     join: true
     join-message: "&5TSetSpawn &e> &f%player% has joined."
