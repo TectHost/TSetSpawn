@@ -11,7 +11,6 @@ Config:
     # cooldown-time is for time between teleport and teleport
     cooldown-time: 5
     enable-void-teleport: true
-    cancel-on-move: true
     death-teleport: true
     drop-items-on-death: true
     Translate:
@@ -26,7 +25,6 @@ Config:
       no-permission: "&5TSetSpawn &e> &cYou do not have permissions"
       cooldown-message: "&5TSetSpawn &e> &cYou have to wait &e%time% &cseconds before running this command again!"
       void-teleport-message: "&5TSetSpawn &e> &fTeleported to the Spawn"
-      move-cancel-message: "&5TSetSpawn &e> &fTeleport canceled because you have moved."
       disconnect-message: "&5TSetSpawn &e> &fTeleport canceled because you disconnected."
     Particles:
       enabled: false
@@ -52,6 +50,11 @@ Config:
       titles-enabled: true
       title-message: "&aTeleporting!"
       subtitle-message: "&eGet ready!"
-      
-    
-      
+    Cancel-on-move:
+      enabled: true
+      check-x: true
+      check-y: true
+      check-z: true
+      check-yaw: false
+      check-pitch: false
+      message: "&5TSetSpawn &e> &cTeleport canceled because you have moved."

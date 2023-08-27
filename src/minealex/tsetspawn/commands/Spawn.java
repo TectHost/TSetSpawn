@@ -29,6 +29,7 @@ public class Spawn implements CommandExecutor, Listener {
     private boolean enableVoidTeleport;
     private String voidTeleportMessage;
     private FileConfiguration config;
+    private Map<String, Location> teleportLocations = new HashMap<>();
 
     public Spawn(Plugin plugin) {
         this.plugin = plugin;
@@ -65,6 +66,10 @@ public class Spawn implements CommandExecutor, Listener {
         float pitch = Float.valueOf(config.getString("Config.Spawn.pitch"));
         World world = plugin.getServer().getWorld(config.getString("Config.Spawn.world"));
         final Location l = new Location(world, x, y, z, yaw, pitch);
+
+        // Guardar la ubicación original del jugador aquí
+        Location originalLocation = jugador.getLocation().clone();
+        teleportLocations.put(jugador.getName(), originalLocation);
 
         int waitTime = config.getInt("Config.Wait-time.time", 5);
         final int delayTicks = waitTime * 20;
@@ -166,21 +171,56 @@ public class Spawn implements CommandExecutor, Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        Player jugador = event.getPlayer();
-        Location location = jugador.getLocation();
+    	Player jugador = event.getPlayer();
+    	Location location = jugador.getLocation();
+        
+     // Verificar si el jugador está en la lista de espera para el teletransporte
+        if (teleportLocations.containsKey(jugador.getName())) {
+            // Comprobar si la opción cancel-on-move está habilitada
+            boolean cancelOnMove = config.getBoolean("Config.Cancel-on-move.enabled", true);
 
-        // Verificar si el jugador está en la lista de espera para el teletransporte
-        if (cooldowns.containsKey(jugador.getName())) {
-            // Cancelar la cuenta regresiva
-            Bukkit.getScheduler().cancelTasks(plugin);
-            // Eliminar al jugador de la lista de espera
-            cooldowns.remove(jugador.getName());
+            if (cancelOnMove) {
+                // Obtener la ubicación original del jugador (guardada cuando se inició la cuenta regresiva)
+                Location originalLocation = teleportLocations.get(jugador.getName());
+                Location currentLocation = event.getTo();
 
-            // Obtener el mensaje personalizable del archivo de configuración
-            String cancelMessage = config.getString("Config.Translate.move-cancel-movement", "&5TSetSpawn &e> &fTeleport canceled because you have moved.");
-            
-            // Enviar el mensaje al jugador
-            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', cancelMessage));
+                // Configurar las coordenadas y ángulos que deben ser verificados
+                boolean checkX = config.getBoolean("Config.Cancel-on-move.check-x", true);
+                boolean checkY = config.getBoolean("Config.Cancel-on-move.check-y", true);
+                boolean checkZ = config.getBoolean("Config.Cancel-on-move.check-z", true);
+                boolean checkYaw = config.getBoolean("Config.Cancel-on-move.check-yaw", true);
+                boolean checkPitch = config.getBoolean("Config.Cancel-on-move.check-pitch", true);
+
+                // Calcular la distancia en las coordenadas y ángulos habilitados
+                double dx = checkX ? Math.abs(originalLocation.getX() - currentLocation.getX()) : 0;
+                double dy = checkY ? Math.abs(originalLocation.getY() - currentLocation.getY()) : 0;
+                double dz = checkZ ? Math.abs(originalLocation.getZ() - currentLocation.getZ()) : 0;
+                float originalYaw = originalLocation.getYaw();
+                float currentYaw = currentLocation.getYaw();
+                float originalPitch = originalLocation.getPitch();
+                float currentPitch = currentLocation.getPitch();
+
+                // Configurar umbrales de distancia y cambio de ángulo (ajusta según sea necesario)
+                double distanceThreshold = 0.5;
+                double yawThreshold = 5.0;
+                double pitchThreshold = 5.0;
+
+                // Comprobar si la distancia o el cambio de ángulo supera los umbrales
+                if ((dx > distanceThreshold || dy > distanceThreshold || dz > distanceThreshold) ||
+                    (checkYaw && Math.abs(originalYaw - currentYaw) > yawThreshold) ||
+                    (checkPitch && Math.abs(originalPitch - currentPitch) > pitchThreshold)) {
+                    // Cancelar la cuenta regresiva
+                    Bukkit.getScheduler().cancelTasks(plugin);
+                    // Eliminar al jugador de la lista de espera
+                    teleportLocations.remove(jugador.getName());
+
+                    // Obtener el mensaje personalizable del archivo de configuración
+                    String cancelMessage = config.getString("Config.Cancel-on-move.message", "&5TSetSpawn &e> &cTeleport canceled because you have moved.");
+
+                    // Enviar el mensaje al jugador
+                    jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', cancelMessage));
+                }
+            }
         }
 
         if (enableVoidTeleport && location.getY() < 0) {
@@ -197,6 +237,40 @@ public class Spawn implements CommandExecutor, Listener {
             // Enviar el mensaje al jugador
             jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', voidTeleportMessage));
         }
+    }
+    
+    
+    private boolean checkDistance(Location loc1, Location loc2, double threshold) {
+        if (loc1 == null || loc2 == null) {
+            return true;
+        }
+        
+        if (config.getBoolean("Config.Cancel-on-move.check-x", true) &&
+            Math.abs(loc1.getX() - loc2.getX()) > threshold) {
+            return false;
+        }
+        
+        if (config.getBoolean("Config.Cancel-on-move.check-y", true) &&
+            Math.abs(loc1.getY() - loc2.getY()) > threshold) {
+            return false;
+        }
+        
+        if (config.getBoolean("Config.Cancel-on-move.check-z", true) &&
+            Math.abs(loc1.getZ() - loc2.getZ()) > threshold) {
+            return false;
+        }
+        
+        if (config.getBoolean("Config.Cancel-on-move.check-yaw", true) &&
+            Math.abs(loc1.getYaw() - loc2.getYaw()) > threshold) {
+            return false;
+        }
+        
+        if (config.getBoolean("Config.Cancel-on-move.check-pitch", true) &&
+            Math.abs(loc1.getPitch() - loc2.getPitch()) > threshold) {
+            return false;
+        }
+        
+        return true;
     }
 
     private Location getSpawnLocationFromConfig() {
