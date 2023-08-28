@@ -22,24 +22,26 @@ import net.md_5.bungee.api.chat.TextComponent;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("deprecation")
 public class Spawn implements CommandExecutor, Listener {
     private Plugin plugin;
     private Map<String, Long> cooldowns = new HashMap<>();
     private boolean enableVoidTeleport;
-    private String voidTeleportMessage;
+    @SuppressWarnings("unused")
+	private String voidTeleportMessage;
     private FileConfiguration config;
     private Map<String, Location> teleportLocations = new HashMap<>();
     private Map<String, Boolean> hasTeleported = new HashMap<>();
     private Map<String, Long> teleportLocationTimes = new HashMap<>();
+    private Map<Player, Long> lastCancelMessageTime = new HashMap<>();
 
     public Spawn(Plugin plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
         Bukkit.getPluginManager().registerEvents(this, plugin);
 
-        enableVoidTeleport = config.getBoolean("Config.enable-void-teleport", true);
-        voidTeleportMessage = config.getString("Config.Translate.void-teleport-message", "&5TSetSpawn &e> &fTeleported to the Spawn");
+        enableVoidTeleport = config.getBoolean("Config.Void.enabled", true);
+        voidTeleportMessage = config.getString("Config.Void.void-teleport-message", "&5TSetSpawn &e> &fTeleported to the Spawn");
     }
 
     public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
@@ -61,11 +63,11 @@ public class Spawn implements CommandExecutor, Listener {
             return true;
         }
 
-        double x = Double.valueOf(config.getString("Config.Spawn.x"));
-        double y = Double.valueOf(config.getString("Config.Spawn.y"));
-        double z = Double.valueOf(config.getString("Config.Spawn.z"));
-        float yaw = Float.valueOf(config.getString("Config.Spawn.yaw"));
-        float pitch = Float.valueOf(config.getString("Config.Spawn.pitch"));
+        double x = Double.parseDouble(config.getString("Config.Spawn.x"));
+        double y = Double.parseDouble(config.getString("Config.Spawn.y"));
+        double z = Double.parseDouble(config.getString("Config.Spawn.z"));
+        float yaw = Float.parseFloat(config.getString("Config.Spawn.yaw"));
+        float pitch = Float.parseFloat(config.getString("Config.Spawn.pitch"));
         World world = plugin.getServer().getWorld(config.getString("Config.Spawn.world"));
         final Location l = new Location(world, x, y, z, yaw, pitch);
 
@@ -75,7 +77,8 @@ public class Spawn implements CommandExecutor, Listener {
         teleportLocationTimes.put(jugador.getName(), System.currentTimeMillis());
 
         int waitTime = config.getInt("Config.Wait-time.time", 5);
-        final int delayTicks = waitTime * 20;
+        @SuppressWarnings("unused")
+		final int delayTicks = waitTime * 20;
 
         String playerName = jugador.getName();
         long currentTime = System.currentTimeMillis();
@@ -122,6 +125,35 @@ public class Spawn implements CommandExecutor, Listener {
         return true;
     }
 
+    @SuppressWarnings("unused")
+	private void spawnParticles(Player player, Location location, String particleType, int amount, double offsetX, double offsetY, double offsetZ) {
+        if (isLegacySpigot()) {
+            // Use the old Effect enum for particle effects (for Spigot 1.8.8)
+            if (particleType.equalsIgnoreCase("FLAME")) {
+                player.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 0);
+            } else if (particleType.equalsIgnoreCase("LAVA")) {
+                player.getWorld().playEffect(location, Effect.LAVA_POP, 0);
+            } else {
+                // Handle other particles as needed
+            }
+        } else {
+            // Handle particles for newer versions here, but Spigot 1.8.8 will use the legacy code above
+            // For example:
+            // player.spawnParticle(org.bukkit.Particle.valueOf(particleType), location, amount, offsetX, offsetY, offsetZ);
+        }
+    }
+
+    private boolean isLegacySpigot() {
+        try {
+            // Check if the Particle enum exists (for newer versions)
+            Class.forName("org.bukkit.Particle");
+            return false;
+        } catch (ClassNotFoundException e) {
+            // Particle enum does not exist (for Spigot 1.8.8)
+            return true;
+        }
+    }
+
     private void executeTeleport(Player jugador, Location l) {
         // Elimina al jugador de la lista de espera antes de teletransportarlo
         cooldowns.remove(jugador.getName());
@@ -131,13 +163,15 @@ public class Spawn implements CommandExecutor, Listener {
         if (particlesEnabled) {
             double radius = config.getDouble("Config.Particles.radius", 1.5);
             int particles = config.getInt("Config.Particles.amount", 50);
-            String particleType = config.getString("Config.Particles.particle-type", "MOBSPAWNER_FLAMES");
+            String particleType = config.getString("Config.Particles.particle-type", "FLAME");
 
             for (int i = 0; i < particles; i++) {
                 double angle = 2 * Math.PI * i / particles;
                 double offsetX = Math.cos(angle) * radius;
                 double offsetZ = Math.sin(angle) * radius;
                 Location particleLocation = l.clone().add(offsetX, 0.5, offsetZ);
+
+                // Spawn the particle using the Effect enum (for Spigot 1.8.8)
                 jugador.getWorld().playEffect(particleLocation, Effect.valueOf(particleType), 0);
             }
         }
@@ -174,7 +208,7 @@ public class Spawn implements CommandExecutor, Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-    	Player jugador = event.getPlayer();
+        Player jugador = event.getPlayer();
         Location location = jugador.getLocation();
 
         // Verificar si el jugador ha sido teletransportado recientemente
@@ -240,16 +274,21 @@ public class Spawn implements CommandExecutor, Listener {
                     teleportLocations.remove(jugador.getName());
                     teleportLocationTimes.remove(jugador.getName());
 
-                    // Obtener el mensaje personalizable del archivo de configuración
-                    String cancelMessage = config.getString("Config.Cancel-on-move.message", "&5TSetSpawn &e> &cTeleport canceled because you have moved.");
+                    if (!lastCancelMessageTime.containsKey(jugador) || (currentTime - lastCancelMessageTime.get(jugador)) >= (config.getInt("Config.cooldown-time") * 1000)) {
+                        // Obtener el mensaje personalizable del archivo de configuración
+                        String cancelMessage = config.getString("Config.Cancel-on-move.message", "&5TSetSpawn &e> &cTeleport canceled because you have moved.");
 
-                    // Enviar el mensaje al jugador
-                    jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', cancelMessage));
+                        // Enviar el mensaje al jugador
+                        jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', cancelMessage));
+
+                        // Actualizar el tiempo del último mensaje de cancelación
+                        lastCancelMessageTime.put(jugador, currentTime);
+                    }
                 }
             }
         }
 
-        if (enableVoidTeleport && location.getY() < 0) {
+        if (enableVoidTeleport && location.getY() < config.getInt("Config.Void.VoidTeleportHeight", 0)) {
             // Teletransportar al jugador al spawn
             Location spawnLocation = getSpawnLocationFromConfig();
             jugador.teleport(spawnLocation);
@@ -264,38 +303,38 @@ public class Spawn implements CommandExecutor, Listener {
             jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', voidTeleportMessage));
         }
     }
-    
-    
-    private boolean checkDistance(Location loc1, Location loc2, double threshold) {
+
+    @SuppressWarnings("unused")
+	private boolean checkDistance(Location loc1, Location loc2, double threshold) {
         if (loc1 == null || loc2 == null) {
             return true;
         }
-        
+
         if (config.getBoolean("Config.Cancel-on-move.check-x", true) &&
             Math.abs(loc1.getX() - loc2.getX()) > threshold) {
             return false;
         }
-        
+
         if (config.getBoolean("Config.Cancel-on-move.check-y", true) &&
             Math.abs(loc1.getY() - loc2.getY()) > threshold) {
             return false;
         }
-        
+
         if (config.getBoolean("Config.Cancel-on-move.check-z", true) &&
             Math.abs(loc1.getZ() - loc2.getZ()) > threshold) {
             return false;
         }
-        
+
         if (config.getBoolean("Config.Cancel-on-move.check-yaw", true) &&
             Math.abs(loc1.getYaw() - loc2.getYaw()) > threshold) {
             return false;
         }
-        
+
         if (config.getBoolean("Config.Cancel-on-move.check-pitch", true) &&
             Math.abs(loc1.getPitch() - loc2.getPitch()) > threshold) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -309,7 +348,6 @@ public class Spawn implements CommandExecutor, Listener {
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    @SuppressWarnings("deprecation")
     private void sendTitleToPlayer(Player player, String message) {
         boolean titlesEnabled = config.getBoolean("Config.Wait-time.titles-enabled", true); // Lee la configuración de títulos
 
@@ -329,3 +367,4 @@ public class Spawn implements CommandExecutor, Listener {
         }
     }
 }
+

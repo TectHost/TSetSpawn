@@ -11,7 +11,6 @@ Config:
     welcome-message: "&5TSetSpawn &e> &f%player% entered for the first time!"
     # cooldown-time is for time between teleport and teleport
     cooldown-time: 5
-    enable-void-teleport: true
     death-teleport: true
     drop-items-on-death: true
     Translate:
@@ -25,12 +24,12 @@ Config:
       spawn: "&5TSetSpawn &e> &fYou have been teleported"
       no-permission: "&5TSetSpawn &e> &cYou do not have permissions"
       cooldown-message: "&5TSetSpawn &e> &cYou have to wait &e%time% &cseconds before running this command again!"
-      void-teleport-message: "&5TSetSpawn &e> &fTeleported to the Spawn"
       disconnect-message: "&5TSetSpawn &e> &fTeleport canceled because you disconnected."
     Particles:
       enabled: false
       radius: 1.5
       amount: 50
+      # Only tested: MOBSPAWNER_FLAMES!
       particle-type: MOBSPAWNER_FLAMES
     Sound:
       enable-sound: false
@@ -59,3 +58,8 @@ Config:
       check-yaw: false
       check-pitch: false
       message: "&5TSetSpawn &e> &cTeleport canceled because you have moved."
+    Void:
+      enabled: true
+      # Change this to -64 for 1.17+
+      VoidTeleportHeight: 0
+      void-teleport-message: "&5TSetSpawn &e> &fTeleported to the Spawn"
