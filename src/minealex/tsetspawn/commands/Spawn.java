@@ -77,15 +77,16 @@ public class Spawn implements CommandExecutor, Listener {
         teleportLocationTimes.put(jugador.getName(), System.currentTimeMillis());
 
         int waitTime = config.getInt("Config.Wait-time.time", 5);
+        int cooldownTime = config.getInt("Config.cooldown-time", 5);
         @SuppressWarnings("unused")
-		final int delayTicks = waitTime * 20;
+        final int delayTicks = waitTime * 20;
 
         String playerName = jugador.getName();
         long currentTime = System.currentTimeMillis();
 
         if (cooldowns.containsKey(playerName)) {
             long lastUsage = cooldowns.get(playerName);
-            long remainingTime = lastUsage + (waitTime * 1000) - currentTime;
+            long remainingTime = lastUsage + (cooldownTime * 1000) - currentTime; // Usar el tiempo de cooldown
             if (remainingTime > 0) {
                 long secondsLeft = remainingTime / 1000;
                 String cooldown = "Config.Translate.cooldown-message";
@@ -103,12 +104,16 @@ public class Spawn implements CommandExecutor, Listener {
             public void run() {
                 if (countdown[0] > 0) {
                     ConfigurationSection waitTimeSection = config.getConfigurationSection("Config.Wait-time");
-                    ConfigurationSection waitTimeMessages = waitTimeSection.getConfigurationSection("messages");
+                    boolean enableMessages = waitTimeSection.getBoolean("enable-messages", true); // Obtener el valor de enable-messages
 
-                    if (waitTimeMessages != null && waitTimeMessages.contains(String.valueOf(countdown[0]))) {
-                        String countdownMessage = waitTimeMessages.getString(String.valueOf(countdown[0]));
-                        jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', countdownMessage));
-                        sendTitleToPlayer(jugador, countdownMessage); // Envía el título al jugador
+                    if (enableMessages) { // Verifica si los mensajes están habilitados en la configuración
+                        ConfigurationSection waitTimeMessages = waitTimeSection.getConfigurationSection("messages");
+
+                        if (waitTimeMessages != null && waitTimeMessages.contains(String.valueOf(countdown[0]))) {
+                            String countdownMessage = waitTimeMessages.getString(String.valueOf(countdown[0]));
+                            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', countdownMessage));
+                            sendTitleToPlayer(jugador, countdownMessage);
+                        }
                     }
 
                     countdown[0]--;
@@ -179,9 +184,15 @@ public class Spawn implements CommandExecutor, Listener {
         // Reproducir el sonido para el jugador justo antes de teletransportar
         playTeleportSound(jugador);
 
+        // Verificar si los mensajes de espera están habilitados
+        boolean enableMessages = config.getBoolean("Config.Wait-time.enable-messages", true);
+
+        if (enableMessages) {
+            String onSpawn = "Config.Translate.spawn";
+            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(onSpawn)));
+        }
+
         jugador.teleport(l);
-        String onSpawn = "Config.Translate.spawn";
-        jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(onSpawn)));
     }
 
     private void playTeleportSound(Player player) {
