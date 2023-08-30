@@ -16,6 +16,7 @@ Advanced SetSpawn plugin
 - Death to spawn
 - Keep inventory
 - PlaceholderAPI Expansion
+- Title on spawn
 
 # Commands
 - /setspawn
@@ -23,6 +24,9 @@ Advanced SetSpawn plugin
 - /tsetspawn reload
 - /tsetspawn
 - /tsetspawn version
+- /tss
+- /tss version
+- /tss reload
 
 # Permissions
 - tsetspawn.reload
