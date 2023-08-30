@@ -1,5 +1,5 @@
 main: minealex.tsetspawn.TSetSpawn
-version: 2.6
+version: 2.7
 name: TSetSpawn
 
 commands:
@@ -10,4 +10,6 @@ commands:
   spawn:
     description: Go to the spawn
   setspawn:
+    description: Set the spawn
+  ftsetspawn:
     description: Set the spawn

@@ -1,7 +1,10 @@
 package minealex.tsetspawn.events;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,40 +12,80 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import minealex.tsetspawn.TSetSpawn;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 public class Welcome implements Listener {
-    private List<String> newPlayers = new ArrayList<>(); // Lista para llevar un registro de los jugadores nuevos
+    private File playersFile;
+    private YamlConfiguration playersConfig;
     private TSetSpawn plugin;
 
     public Welcome(TSetSpawn plugin) {
         this.plugin = plugin;
+
+        // Initialize the players data file and configuration
+        playersFile = new File(plugin.getDataFolder(), "players.yml");
+        playersConfig = YamlConfiguration.loadConfiguration(playersFile);
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        String playerName = player.getName();
+        UUID playerUUID = player.getUniqueId(); // Get the player's UUID
 
-        // Verificar si el jugador está en la lista de jugadores nuevos
-        if (!newPlayers.contains(playerName)) {
-            FileConfiguration config = plugin.getConfig();
-            String gospawn = "Config.welcome";
+        // Check if the player's UUID is in the data file
+        if (playersConfig.contains(playerUUID.toString())) {
+            // Player is not new, do not teleport to FTSpawn
+            return;
+        }
 
-            // Verificar si el mensaje de bienvenida está habilitado en la configuración
-            if (config.getBoolean(gospawn)) {
-                String mensajeBienvenida = config.getString("Config.welcome-message");
+        FileConfiguration config = plugin.getConfig();
+        String gospawn = "Config.welcome";
 
-                // Reemplazar %player% con el nombre del jugador
-                mensajeBienvenida = mensajeBienvenida.replace("%player%", playerName);
+        if (config.getBoolean(gospawn)) {
+            String mensajeBienvenida = config.getString("Config.welcome-message");
+            mensajeBienvenida = mensajeBienvenida.replace("%player%", player.getName());
 
-                // Enviar el mensaje de bienvenida
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', mensajeBienvenida));
+            // Send the welcome message
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', mensajeBienvenida));
 
-                // Agregar al jugador a la lista de jugadores nuevos
-                newPlayers.add(playerName);
+            // Check if the first-time spawn is configured
+            if (config.contains("Config.FTSpawn")) {
+                // Delay the teleport to ensure everything is loaded
+                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                    Location ftSpawn = getLocationFromConfig(config, "Config.FTSpawn");
+                    if (ftSpawn != null) {
+                        player.teleport(ftSpawn);
+                    }
+                }, 20L); // Delay of 1 second (20 ticks)
             }
+
+            // Add the player's UUID to the data file
+            playersConfig.set(playerUUID.toString(), true);
+            savePlayersFile();
+        }
+    }
+    
+    private Location getLocationFromConfig(FileConfiguration config, String path) {
+        if (config.contains(path + ".world") && config.contains(path + ".x") && config.contains(path + ".y")
+                && config.contains(path + ".z") && config.contains(path + ".yaw") && config.contains(path + ".pitch")) {
+            World world = plugin.getServer().getWorld(config.getString(path + ".world"));
+            double x = config.getDouble(path + ".x");
+            double y = config.getDouble(path + ".y");
+            double z = config.getDouble(path + ".z");
+            float yaw = (float) config.getDouble(path + ".yaw");
+            float pitch = (float) config.getDouble(path + ".pitch");
+            return new Location(world, x, y, z, yaw, pitch);
+        }
+        return null;
+    }
+    
+    private void savePlayersFile() {
+        try {
+            playersConfig.save(playersFile);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
