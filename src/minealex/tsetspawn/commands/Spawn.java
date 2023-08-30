@@ -17,6 +17,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import minealex.tsetspawn.utils.TitleManager;
 import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.HashMap;
@@ -102,17 +104,21 @@ public class Spawn implements CommandExecutor, Listener {
         BukkitRunnable countdownTask = new BukkitRunnable() {
             @Override
             public void run() {
-                if (countdown[0] > 0) {
+            	if (countdown[0] > 0) {
                     ConfigurationSection waitTimeSection = config.getConfigurationSection("Config.Wait-time");
                     boolean enableMessages = waitTimeSection.getBoolean("enable-messages", true); // Obtener el valor de enable-messages
 
                     if (enableMessages) { // Verifica si los mensajes están habilitados en la configuración
                         ConfigurationSection waitTimeMessages = waitTimeSection.getConfigurationSection("messages");
 
-                        if (waitTimeMessages != null && waitTimeMessages.contains(String.valueOf(countdown[0]))) {
+                        if (waitTimeMessages != null) {
+                            // Obtén el mensaje solo si está configurado en el archivo de configuración
                             String countdownMessage = waitTimeMessages.getString(String.valueOf(countdown[0]));
-                            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', countdownMessage));
-                            sendTitleToPlayer(jugador, countdownMessage);
+
+                            if (countdownMessage != null) {
+                                jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', countdownMessage));
+                                sendTitleToPlayer(jugador, countdownMessage);
+                            }
                         }
                     }
 
@@ -190,6 +196,18 @@ public class Spawn implements CommandExecutor, Listener {
         if (enableMessages) {
             String onSpawn = "Config.Translate.spawn";
             jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(onSpawn)));
+        }
+
+        // Verificar si los títulos están habilitados en el config.yml
+        boolean titlesEnabled = config.getBoolean("Config.spawn-title-subtitle-enabled", true);
+
+        if (titlesEnabled) {
+            // Obtener el título y el subtítulo del config.yml
+            String titleMessage = config.getString("Config.Title.title-message", "&aWelcome to the spawn!");
+            String subtitleMessage = config.getString("Config.Title.subtitle-message", "&eEnjoy your stay!");
+
+            // Utilizar TitleManager para mostrar el título y el subtítulo
+            TitleManager.sendTitle(jugador, titleMessage, subtitleMessage);
         }
 
         jugador.teleport(l);

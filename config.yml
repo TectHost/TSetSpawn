@@ -1,7 +1,15 @@
+# go-spawn: Go spawn on enter
+# cooldown-time: Time between teleport and teleport
+# wait-time: Time to teleport to spawn
+# wait-time messages
+# "5": "&5TSetSpawn &e> &fGet ready! Teleporting in 5 seconds."
+# "4": "&5TSetSpawn &e> &fGet ready! Teleporting in 4 seconds."
+# "3": "&5TSetSpawn &e> &fGet ready! Teleporting in 3 seconds."
+# "2": "&5TSetSpawn &e> &fGet ready! Teleporting in 2 seconds."
+# "1": "&5TSetSpawn &e> &fGet ready! Teleporting in 1 seconds."
 Config:
     enter-message: true
     enter-message-text: "&6&lWelcome to the server %player%! &f| &5TSetSpawn"
-    # Go spawn on enter to the server
     go-spawn: true
     join: true
     join-message: "&5TSetSpawn &e> &f%player% has joined."
@@ -9,10 +17,12 @@ Config:
     quit-message: "&5TSetSpawn &e> &f%player% has left."
     welcome: true
     welcome-message: "&5TSetSpawn &e> &f%player% entered for the first time!"
-    # cooldown-time is for time between teleport and teleport
     cooldown-time: 5
     death-teleport: true
     drop-items-on-death: true
+    spawn-title-subtitle-enabled: true
+    spawn-title: "&aWelcome to the spawn!"
+    spawn-subtitle: "&eEnjoy your stay!"
     Translate:
       version: "&5TSetSpawn &e> &7The version is: %version%"
       spawn-not-placed: "&5TSetSpawn &e> &cThe spawn does not exist"
@@ -29,24 +39,17 @@ Config:
       enabled: false
       radius: 1.5
       amount: 50
-      # Only tested: MOBSPAWNER_FLAMES!
       particle-type: MOBSPAWNER_FLAMES
     Sound:
       enable-sound: false
       sound-type: "LEVEL_UP"
       volume: 1.0
       pitch: 1.0
-    # wait-time is for time to teleport to spawn
     Wait-time:
       enabled: true
       time: 5
       enable-messages: true
       messages:
-        "5": "&5TSetSpawn &e> &fGet ready! Teleporting in 5 seconds."
-        "4": "&5TSetSpawn &e> &fGet ready! Teleporting in 4 seconds."
-        "3": "&5TSetSpawn &e> &fGet ready! Teleporting in 3 seconds."
-        "2": "&5TSetSpawn &e> &fGet ready! Teleporting in 2 seconds."
-        "1": "&5TSetSpawn &e> &fGet ready! Teleporting in 1 seconds."
         "0": "&5TSetSpawn &e> &fTeleporting now!"
       titles-enabled: true
       title-message: "&aTeleporting!"
@@ -61,6 +64,5 @@ Config:
       message: "&5TSetSpawn &e> &cTeleport canceled because you have moved."
     Void:
       enabled: true
-      # Change this to -64 for 1.17+
       VoidTeleportHeight: 0
       void-teleport-message: "&5TSetSpawn &e> &fTeleported to the Spawn"
