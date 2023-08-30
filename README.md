@@ -1,5 +1,5 @@
 # TSetSpawn
-Advanced SetSpawn plugin
+The most advanced SetSpawn plugin
 
 # Features
 - SetSpawn
@@ -17,6 +17,7 @@ Advanced SetSpawn plugin
 - Keep inventory
 - PlaceholderAPI Expansion
 - Title on spawn
+- First join spawn
 
 # Commands
 - /setspawn
@@ -27,11 +28,13 @@ Advanced SetSpawn plugin
 - /tss
 - /tss version
 - /tss reload
+- /ftsetspawn
 
 # Permissions
 - tsetspawn.reload
 - tsetspawn.version
 - tsetspawn.setspawn
+- tsetspawn.ftsetspawn
 
 # Placeholders
 - %tsetspawn_spawn%
