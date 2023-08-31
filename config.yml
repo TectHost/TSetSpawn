@@ -35,6 +35,9 @@ Config:
       no-permission: "&5TSetSpawn &e> &cYou do not have permissions"
       cooldown-message: "&5TSetSpawn &e> &cYou have to wait &e%time% &cseconds before running this command again!"
       disconnect-message: "&5TSetSpawn &e> &fTeleport canceled because you disconnected."
+      spawn-removed: "&5TSetSpawn &e> &fSpawn removed."
+      ftspawn-removed: "&5TSetSpawn &e> &fFTSpawn removed."
+      remove-usage: "&5TSetSpawn &e> &cUsage is /removespawn (spawn|ftspawn)"
     Particles:
       enabled: false
       radius: 1.5
