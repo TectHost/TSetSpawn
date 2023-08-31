@@ -66,3 +66,7 @@ Config:
       enabled: true
       VoidTeleportHeight: 0
       void-teleport-message: "&5TSetSpawn &e> &fTeleported to the Spawn"
+      EnabledWorlds:
+      - world
+      - world_nether
+      - world_the_end

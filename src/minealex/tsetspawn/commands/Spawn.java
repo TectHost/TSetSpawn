@@ -22,6 +22,7 @@ import minealex.tsetspawn.utils.TitleManager;
 import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
@@ -55,10 +56,59 @@ public class Spawn implements CommandExecutor, Listener {
 
         final Player jugador = (Player) sender;
 
-        if (args.length > 0) {
-            // Manejar los argumentos del comando aquí
+        if (args.length > 0 && jugador.hasPermission("tsetspawn.admin")) {
+            if (args[0].equalsIgnoreCase("all")) {
+                // Comando para teletransportar a todos los jugadores al spawn
+                for (Player targetPlayer : Bukkit.getOnlinePlayers()) {
+                    if (!targetPlayer.equals(jugador)) {
+                        // Obtener la ubicación del spawn desde la configuración
+                        Location spawnLocation = getSpawnLocationFromConfig();
+
+                        // Teletransportar al jugador objetivo al spawn
+                        targetPlayer.teleport(spawnLocation);
+
+                        // Restablecer la distancia de caída del jugador a cero para evitar daños
+                        targetPlayer.setFallDistance(0);
+
+                        // Obtener el mensaje personalizable del archivo de configuración
+                        String teleportMessage = config.getString("Config.Translate.teleport-message", "&5TSetSpawn &e> &fTeleported to the Spawn");
+
+                        // Enviar el mensaje al jugador objetivo
+                        targetPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', teleportMessage.replace("%player%", jugador.getName())));
+                    }
+                }
+                jugador.sendMessage(ChatColor.GREEN + "Teletransportaste a todos los jugadores al spawn.");
+                return true;
+            } else {
+                String targetPlayerName = args[0];
+                Player targetPlayer = Bukkit.getPlayer(targetPlayerName);
+
+                if (targetPlayer != null) {
+                    // Comando para teletransportar a un jugador específico al spawn
+                    // Obtener la ubicación del spawn desde la configuración
+                    Location spawnLocation = getSpawnLocationFromConfig();
+
+                    // Teletransportar al jugador objetivo al spawn
+                    targetPlayer.teleport(spawnLocation);
+
+                    // Restablecer la distancia de caída del jugador a cero para evitar daños
+                    targetPlayer.setFallDistance(0);
+
+                    // Obtener el mensaje personalizable del archivo de configuración
+                    String teleportMessage = config.getString("Config.Translate.teleport-message", "&5TSetSpawn &e> &fTeleported to the Spawn");
+
+                    // Enviar el mensaje al jugador objetivo
+                    targetPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', teleportMessage.replace("%player%", jugador.getName())));
+                    jugador.sendMessage(ChatColor.GREEN + "Teletransportaste a " + targetPlayer.getName() + " al spawn.");
+                    return true;
+                } else {
+                    jugador.sendMessage(ChatColor.RED + "El jugador objetivo no está en línea.");
+                    return true;
+                }
+            }
         }
 
+        // Resto del código original para el teletransporte normal
         if (!config.contains("Config.Spawn.x") || !config.contains("Config.Spawn.y") || !config.contains("Config.Spawn.z")) {
             String spawnNo = "Config.Translate.spawn-not-placed";
             jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(spawnNo)));
@@ -318,18 +368,26 @@ public class Spawn implements CommandExecutor, Listener {
         }
 
         if (enableVoidTeleport && location.getY() < config.getInt("Config.Void.VoidTeleportHeight", 0)) {
-            // Teletransportar al jugador al spawn
-            Location spawnLocation = getSpawnLocationFromConfig();
-            jugador.teleport(spawnLocation);
+            String worldName = location.getWorld().getName();
+            List<String> enabledWorlds = config.getStringList("Config.Void.EnabledWorlds");
 
-            // Restablecer la distancia de caída del jugador a cero para evitar daños
-            jugador.setFallDistance(0);
+            if (enabledWorlds.contains(worldName)) {
+                // El mundo actual está en la lista de mundos habilitados
+                // Continuar con el Void Teleport
 
-            // Obtener el mensaje personalizable del archivo de configuración
-            String voidTeleportMessage = config.getString("Config.Translate.void-teleport-message", "&5TSetSpawn &e> &fTeleported to the Spawn");
+                // Teletransportar al jugador al spawn
+                Location spawnLocation = getSpawnLocationFromConfig();
+                jugador.teleport(spawnLocation);
 
-            // Enviar el mensaje al jugador
-            jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', voidTeleportMessage));
+                // Restablecer la distancia de caída del jugador a cero para evitar daños
+                jugador.setFallDistance(0);
+
+                // Obtener el mensaje personalizable del archivo de configuración
+                String voidTeleportMessage = config.getString("Config.Translate.void-teleport-message", "&5TSetSpawn &e> &fTeleported to the Spawn");
+
+                // Enviar el mensaje al jugador
+                jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', voidTeleportMessage));
+            }
         }
     }
 
