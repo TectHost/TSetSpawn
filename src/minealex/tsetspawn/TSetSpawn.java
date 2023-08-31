@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import minealex.tsetspawn.placeholders.Placeholders;
 import minealex.tsetspawn.commands.Commands;
 import minealex.tsetspawn.commands.FTSetSpawn;
+import minealex.tsetspawn.commands.RemoveSpawn;
 import minealex.tsetspawn.commands.SetSpawn;
 import minealex.tsetspawn.commands.Spawn;
 import minealex.tsetspawn.events.Enter;
@@ -43,6 +44,7 @@ public class TSetSpawn extends JavaPlugin {
         this.getCommand("spawn").setExecutor(new Spawn(this));
         this.getCommand("setspawn").setExecutor(new SetSpawn(this));
         this.getCommand("ftsetspawn").setExecutor(new FTSetSpawn(this));
+        this.getCommand("removespawn").setExecutor(new RemoveSpawn(this));
     }
 
     public void registerEvents() {
