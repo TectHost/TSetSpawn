@@ -20,6 +20,7 @@ The most advanced SetSpawn plugin
 - First join spawn
 - Send a specific player to spawn
 - Sends all players to spawn
+- Delete spawn & ftspawn with command
 
 # Commands
 - /setspawn
@@ -33,6 +34,7 @@ The most advanced SetSpawn plugin
 - /ftsetspawn
 - spawn (player)
 - spawn all
+- removespawn (spawn/ftspawn)
 
 # Permissions
 - tsetspawn.reload
@@ -40,6 +42,7 @@ The most advanced SetSpawn plugin
 - tsetspawn.setspawn
 - tsetspawn.ftsetspawn
 - tsetspawn.admin (/spawn (player) and /spawn all)
+- tsetspawn.remove
 
 # Placeholders
 - %tsetspawn_spawn%
