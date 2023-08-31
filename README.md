@@ -11,13 +11,15 @@ The most advanced SetSpawn plugin
 - Wait-time
 - Particles
 - Sound on spawn
-- Void Teleport
+- Void Teleport (configurable worlds)
 - Cancel teleport on move
 - Death to spawn
 - Keep inventory
 - PlaceholderAPI Expansion
 - Title on spawn
 - First join spawn
+- Send a specific player to spawn
+- Sends all players to spawn
 
 # Commands
 - /setspawn
@@ -29,12 +31,15 @@ The most advanced SetSpawn plugin
 - /tss version
 - /tss reload
 - /ftsetspawn
+- spawn (player)
+- spawn all
 
 # Permissions
 - tsetspawn.reload
 - tsetspawn.version
 - tsetspawn.setspawn
 - tsetspawn.ftsetspawn
+- tsetspawn.admin (/spawn (player) and /spawn all)
 
 # Placeholders
 - %tsetspawn_spawn%
