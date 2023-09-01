@@ -2,7 +2,9 @@ package minealex.tsetspawn.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Effect;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -11,10 +13,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -235,6 +239,36 @@ public class Spawn implements CommandExecutor, Listener {
                 // Spawn the particle using the Effect enum (for Spigot 1.8.8)
                 jugador.getWorld().playEffect(particleLocation, Effect.valueOf(particleType), 0);
             }
+        }
+
+        // Crear el efecto de fuegos artificiales si está habilitado en la configuración
+        boolean fireworksEnabled = config.getBoolean("Config.Firework.enabled", false);
+
+        if (fireworksEnabled) {
+            List<String> colors = config.getStringList("Config.Firework.colors");
+            List<String> fadeColors = config.getStringList("Config.Firework.fade-colors");
+            FireworkEffect.Type type = FireworkEffect.Type.valueOf(config.getString("Config.Firework.type", "BALL"));
+            int power = config.getInt("Config.Firework.power", 1);
+
+            // Crear el efecto de fuegos artificiales
+            FireworkEffect.Builder builder = FireworkEffect.builder();
+            for (String color : colors) {
+                int colorValue = Integer.parseInt(color, 16); // Convertir el valor hexadecimal a entero
+                builder.withColor(Color.fromRGB(colorValue)); // Convertir el entero en un objeto Color
+            }
+            for (String fadeColor : fadeColors) {
+                int fadeColorValue = Integer.parseInt(fadeColor, 16);
+                builder.withFade(Color.fromRGB(fadeColorValue));
+            }
+            builder.with(type);
+            FireworkEffect effect = builder.build();
+
+            // Crear y lanzar el fuego artificial en la ubicación del spawn
+            Firework firework = jugador.getWorld().spawn(l, Firework.class); // 'l' es la ubicación del spawn
+            FireworkMeta meta = firework.getFireworkMeta();
+            meta.addEffect(effect);
+            meta.setPower(power);
+            firework.setFireworkMeta(meta);
         }
 
         // Reproducir el sonido para el jugador justo antes de teletransportar

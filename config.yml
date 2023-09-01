@@ -73,3 +73,13 @@ Config:
       - world
       - world_nether
       - world_the_end
+    Firework:
+      enabled: true
+      colors:
+        - FF0000
+        - FFFF00
+      fade-colors:
+        - 00FF00
+        - 0000FF
+      type: BALL
+      power: 1
