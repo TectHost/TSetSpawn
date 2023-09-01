@@ -21,6 +21,7 @@ The most advanced SetSpawn plugin
 - Send a specific player to spawn
 - Sends all players to spawn
 - Delete spawn & ftspawn with command
+- Fireworks on spawn
 
 # Commands
 - /setspawn
