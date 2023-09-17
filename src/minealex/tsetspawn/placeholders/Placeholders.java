@@ -52,6 +52,15 @@ public class Placeholders extends PlaceholderExpansion {
             // Format the spawn coordinates
             return String.format("%.1f, %.1f, %.1f", spawnX, spawnY, spawnZ);
         }
+        
+        if (identifier.equals("ftspawn")) {
+            double ftspawnX = Double.parseDouble(plugin.getConfig().getString("Config.FTSpawn.x"));
+            double ftspawnY = Double.parseDouble(plugin.getConfig().getString("Config.FTSpawn.y"));
+            double ftspawnZ = Double.parseDouble(plugin.getConfig().getString("Config.FTSpawn.z"));
+
+            // Format the spawn coordinates
+            return String.format("%.1f, %.1f, %.1f", ftspawnX, ftspawnY, ftspawnZ);
+        }
 
         return null;
     }

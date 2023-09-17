@@ -26,17 +26,12 @@ public class TSetSpawn extends JavaPlugin {
     public String nombre = ChatColor.BLUE + "[" + pdffile.getName() + ChatColor.BLUE + "]";
 
     public void onEnable() {
-        Bukkit.getConsoleSender().sendMessage(nombre + ChatColor.GREEN + " Has been activated (version: " + version + ")");
         registerCommands();
         registerEvents();
         registerConfig();
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholders(this).register();
         }
-    }
-
-    public void onDisable() {
-        Bukkit.getConsoleSender().sendMessage(nombre + ChatColor.RED + " Has been deactivated (version: " + version + ")");
     }
 
     public void registerCommands() {

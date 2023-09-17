@@ -22,9 +22,8 @@ public class Enter implements Listener {
     public void onEntering(PlayerJoinEvent event) {
         Player jugador = event.getPlayer();
         FileConfiguration config = plugin.getConfig();
-        String gospawn = "Config.go-spawn";
 
-        if (config.getString(gospawn).equals("true")) {
+        if (config.getBoolean("Config.go-spawn")) {
             if (config.contains("Config.Spawn.x") && !hasPlayerTeleported(jugador)) {
                 double x = Double.valueOf(config.getString("Config.Spawn.x"));
                 double y = Double.valueOf(config.getString("Config.Spawn.y"));
@@ -40,8 +39,7 @@ public class Enter implements Listener {
             }
         }
 
-        String path = "Config.enter-message";
-        if (config.getString(path).equals("true")) {
+        if (config.getBoolean("Config.enter-message")) {
             String texto = "Config.enter-message-text";
             jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString(texto)).replaceAll("%player%", jugador.getName()));
         }
@@ -55,8 +53,5 @@ public class Enter implements Listener {
     }
 
     private void markPlayerAsTeleported(Player player) {
-        // Implement logic to mark the player as having teleported before
-        // You could use a database, player data, or a persistent file for this
-        // For simplicity, we won't implement it here.
     }
 }

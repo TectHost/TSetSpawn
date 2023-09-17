@@ -29,12 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("deprecation")
 public class Spawn implements CommandExecutor, Listener {
     private Plugin plugin;
     private Map<String, Long> cooldowns = new HashMap<>();
     private boolean enableVoidTeleport;
-    @SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private String voidTeleportMessage;
     private FileConfiguration config;
     private Map<String, Location> teleportLocations = new HashMap<>();
@@ -460,16 +459,17 @@ public class Spawn implements CommandExecutor, Listener {
     }
 
     private Location getSpawnLocationFromConfig() {
-        double x = Double.parseDouble(config.getString("Config.Spawn.x"));
-        double y = Double.parseDouble(config.getString("Config.Spawn.y"));
-        double z = Double.parseDouble(config.getString("Config.Spawn.z"));
-        float yaw = Float.parseFloat(config.getString("Config.Spawn.yaw"));
-        float pitch = Float.parseFloat(config.getString("Config.Spawn.pitch"));
+        double x = config.getDouble("Config.Spawn.x");
+        double y = config.getDouble("Config.Spawn.y");
+        double z = config.getDouble("Config.Spawn.z");
+        float yaw = (float) config.getDouble("Config.Spawn.yaw");
+        float pitch = (float) config.getDouble("Config.Spawn.pitch");
         World world = plugin.getServer().getWorld(config.getString("Config.Spawn.world"));
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    private void sendTitleToPlayer(Player player, String message) {
+    @SuppressWarnings("deprecation")
+	private void sendTitleToPlayer(Player player, String message) {
         boolean titlesEnabled = config.getBoolean("Config.Wait-time.titles-enabled", true); // Lee la configuración de títulos
 
         if (titlesEnabled) {

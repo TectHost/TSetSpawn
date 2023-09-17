@@ -41,9 +41,9 @@ public class Welcome implements Listener {
         }
 
         FileConfiguration config = plugin.getConfig();
-        String gospawn = "Config.welcome";
+        boolean welcomeEnabled = config.getBoolean("Config.welcome");
 
-        if (config.getBoolean(gospawn)) {
+        if (welcomeEnabled) {
             String mensajeBienvenida = config.getString("Config.welcome-message");
             mensajeBienvenida = mensajeBienvenida.replace("%player%", player.getName());
 

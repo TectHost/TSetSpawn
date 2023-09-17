@@ -1,5 +1,5 @@
 main: minealex.tsetspawn.TSetSpawn
-version: 3.0
+version: 3.0.1
 name: TSetSpawn
 
 commands:
@@ -12,6 +12,6 @@ commands:
   setspawn:
     description: Set the spawn
   ftsetspawn:
-    description: Set the spawn
+    description: Set the ftspawn
   removespawn:
-    description: Set the spawn
+    description: Remove the spawn

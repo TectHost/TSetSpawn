@@ -11,36 +11,36 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import minealex.tsetspawn.TSetSpawn;
 
 public class Join implements Listener {
-	
-private TSetSpawn plugin;
-	
-	public Join(TSetSpawn plugin) {
-		this.plugin = plugin;
-	}
+    
+    private TSetSpawn plugin;
+    
+    public Join(TSetSpawn plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-    	FileConfiguration config = plugin.getConfig();
-    	String join = "Config.join";
-    	if(config.getString(join).equals("true")) {
-    		String joinmessage = "Config.join-message";
-    		Player jugador = event.getPlayer();
-    		String mensaje = ChatColor.translateAlternateColorCodes('&', config.getString(joinmessage)).replaceAll("%player%", jugador.getName());
-        
-        event.setJoinMessage(mensaje);
-    	}
+        FileConfiguration config = plugin.getConfig();
+        boolean join = config.getBoolean("Config.join");
+        if(join) {
+            String joinmessage = "Config.join-message";
+            Player jugador = event.getPlayer();
+            String mensaje = ChatColor.translateAlternateColorCodes('&', config.getString(joinmessage)).replaceAll("%player%", jugador.getName());
+            
+            event.setJoinMessage(mensaje);
+        }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-    	FileConfiguration config = plugin.getConfig();
-    	String join = "Config.quit";
-    	if(config.getString(join).equals("true")) {
-    		String quitmessage = "Config.quit-message";
-    		Player jugador = event.getPlayer();
-    		String mensaje = ChatColor.translateAlternateColorCodes('&', config.getString(quitmessage)).replaceAll("%player%", jugador.getName());
+        FileConfiguration config = plugin.getConfig();
+        boolean quit = config.getBoolean("Config.quit");
+        if(quit) {
+            String quitmessage = "Config.quit-message";
+            Player jugador = event.getPlayer();
+            String mensaje = ChatColor.translateAlternateColorCodes('&', config.getString(quitmessage)).replaceAll("%player%", jugador.getName());
         
-        event.setQuitMessage(mensaje);
-    	}
+            event.setQuitMessage(mensaje);
+        }
     }
 }
