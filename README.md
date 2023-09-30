@@ -48,6 +48,8 @@ The most advanced SetSpawn plugin
 # Placeholders
 - %tsetspawn_spawn%
 - %tsetspawn_ftspawn%
+- %tsetspawn_spawn_formatted%
+- %tsetspawn_ftspawn_formatted%
 
 # Dependencies
 - PlaceholderAPI
