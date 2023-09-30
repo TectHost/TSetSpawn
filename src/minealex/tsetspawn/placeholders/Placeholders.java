@@ -61,6 +61,24 @@ public class Placeholders extends PlaceholderExpansion {
             // Format the spawn coordinates
             return String.format("%.1f, %.1f, %.1f", ftspawnX, ftspawnY, ftspawnZ);
         }
+        
+        if (identifier.equals("spawn_formatted")) {
+            int spawnX = (int) Double.parseDouble(plugin.getConfig().getString("Config.Spawn.x"));
+            int spawnY = (int) Double.parseDouble(plugin.getConfig().getString("Config.Spawn.y"));
+            int spawnZ = (int) Double.parseDouble(plugin.getConfig().getString("Config.Spawn.z"));
+
+            // Format the spawn coordinates without decimals or commas
+            return String.format("%d %d %d", spawnX, spawnY, spawnZ);
+        }
+        
+        if (identifier.equals("ftspawn_formatted")) {
+            int ftspawnX = (int) Double.parseDouble(plugin.getConfig().getString("Config.FTSpawn.x"));
+            int ftspawnY = (int) Double.parseDouble(plugin.getConfig().getString("Config.FTSpawn.y"));
+            int ftspawnZ = (int) Double.parseDouble(plugin.getConfig().getString("Config.FTSpawn.z"));
+
+            // Format the spawn coordinates without decimals or commas
+            return String.format("%d %d %d", ftspawnX, ftspawnY, ftspawnZ);
+        }
 
         return null;
     }
