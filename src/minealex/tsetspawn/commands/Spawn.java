@@ -131,7 +131,14 @@ public class Spawn implements CommandExecutor, Listener {
         teleportLocations.put(jugador.getName(), originalLocation);
         teleportLocationTimes.put(jugador.getName(), System.currentTimeMillis());
 
-        int waitTime = config.getInt("Config.Wait-time.time", 5);
+        int waitTime = config.getInt("Config.Wait-time.times.default", 5);
+        for (String permission : config.getConfigurationSection("Config.Wait-time.times").getKeys(false)) {
+        	    String fullPermission = "tsetspawn." + permission;
+        	     if (jugador.hasPermission(fullPermission)) {
+        	    	        waitTime = config.getInt("Config.Wait-time.times." + permission, waitTime);
+        	    	             break;
+        	    	                }
+        	       }
         int cooldownTime = config.getInt("Config.cooldown-time", 5);
         @SuppressWarnings("unused")
         final int delayTicks = waitTime * 20;

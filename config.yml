@@ -1,12 +1,6 @@
 # go-spawn: Go spawn on enter
 # cooldown-time: Time between teleport and teleport
 # wait-time: Time to teleport to spawn
-# wait-time messages
-# "5": "&5TSetSpawn &e> &fGet ready! Teleporting in 5 seconds."
-# "4": "&5TSetSpawn &e> &fGet ready! Teleporting in 4 seconds."
-# "3": "&5TSetSpawn &e> &fGet ready! Teleporting in 3 seconds."
-# "2": "&5TSetSpawn &e> &fGet ready! Teleporting in 2 seconds."
-# "1": "&5TSetSpawn &e> &fGet ready! Teleporting in 1 seconds."
 Config:
     enter-message: true
     enter-message-text: "&6&lWelcome to the server %player%! &f| &5TSetSpawn"
@@ -50,9 +44,18 @@ Config:
       pitch: 1.0
     Wait-time:
       enabled: true
-      time: 5
+      times:
+        admin: 2
+        mod: 4
+        vip: 3
+        default: 5
       enable-messages: true
       messages:
+        "5": "&5TSetSpawn &e> &fGet ready! Teleporting in 5 seconds."
+        "4": "&5TSetSpawn &e> &fGet ready! Teleporting in 4 seconds."
+        "3": "&5TSetSpawn &e> &fGet ready! Teleporting in 3 seconds."
+        "2": "&5TSetSpawn &e> &fGet ready! Teleporting in 2 seconds."
+        "1": "&5TSetSpawn &e> &fGet ready! Teleporting in 1 seconds."
         "0": "&5TSetSpawn &e> &fTeleporting now!"
       titles-enabled: true
       title-message: "&aTeleporting!"
