@@ -22,6 +22,7 @@ The most advanced SetSpawn plugin
 - Sends all players to spawn
 - Delete spawn & ftspawn with command
 - Fireworks on spawn
+- Different time in cancel-on-move according to a permission
 
 # Commands
 - /setspawn
@@ -44,6 +45,7 @@ The most advanced SetSpawn plugin
 - tsetspawn.ftsetspawn
 - tsetspawn.admin (/spawn (player) and /spawn all)
 - tsetspawn.remove
+- tsetspawn.(group on cancel-on-move)
 
 # Placeholders
 - %tsetspawn_spawn%
