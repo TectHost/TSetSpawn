@@ -1,5 +1,5 @@
 main: minealex.tsetspawn.TSetSpawn
-version: 3.0.3
+version: 3.0.4
 name: TSetSpawn
 
 commands:
@@ -15,3 +15,22 @@ commands:
     description: Set the ftspawn
   removespawn:
     description: Remove the spawn
+
+permissions:
+  tsetspawn.reload:
+    description: Allows reloading the plugin
+
+  tsetspawn.version:
+    description: Allows checking the plugin version
+
+  tsetspawn.setspawn:
+    description: Allows setting the spawn
+
+  tsetspawn.ftsetspawn:
+    description: Allows setting the ftspawn
+
+  tsetspawn.admin:
+    description: Allows administrative commands for TSetSpawn
+
+  tsetspawn.remove:
+    description: Allows removing the spawn
