@@ -204,13 +204,7 @@ public class Spawn implements CommandExecutor, Listener {
                 player.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 0);
             } else if (particleType.equalsIgnoreCase("LAVA")) {
                 player.getWorld().playEffect(location, Effect.LAVA_POP, 0);
-            } else {
-                // Handle other particles as needed
             }
-        } else {
-            // Handle particles for newer versions here, but Spigot 1.8.8 will use the legacy code above
-            // For example:
-            // player.spawnParticle(org.bukkit.Particle.valueOf(particleType), location, amount, offsetX, offsetY, offsetZ);
         }
     }
 
@@ -394,11 +388,6 @@ public class Spawn implements CommandExecutor, Listener {
                     teleportLocationTimes.remove(jugador.getName());
 
                     if (!lastCancelMessageTime.containsKey(jugador) || (currentTime - lastCancelMessageTime.get(jugador)) >= (config.getInt("Config.cooldown-time") * 1000)) {
-                        // Obtener el mensaje personalizable del archivo de configuración
-                        String cancelMessage = config.getString("Config.Cancel-on-move.message", "&5TSetSpawn &e> &cTeleport canceled because you have moved.");
-
-                        // Enviar el mensaje al jugador
-                        jugador.sendMessage(ChatColor.translateAlternateColorCodes('&', cancelMessage));
 
                         // Actualizar el tiempo del último mensaje de cancelación
                         lastCancelMessageTime.put(jugador, currentTime);

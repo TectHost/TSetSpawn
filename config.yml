@@ -67,7 +67,6 @@ Config:
       check-z: true
       check-yaw: false
       check-pitch: false
-      message: "&5TSetSpawn &e> &cTeleport canceled because you have moved."
     Void:
       enabled: true
       VoidTeleportHeight: 0
