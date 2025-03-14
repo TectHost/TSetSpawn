@@ -1,0 +1,11 @@
+utils\TranslateHexColorCodes.class
+utils\ConfigFile.class
+commands\Commands.class
+managers\SpawnMessagesManager.class
+commands\Spawn.class
+managers\SpawnsManager.class
+commands\SetSpawn.class
+managers\ConfigManager.class
+utils\TranslateColors.class
+managers\MessagesManager.class
+tsetspawn\TSetSpawn.class

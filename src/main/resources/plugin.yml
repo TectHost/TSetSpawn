@@ -1,0 +1,17 @@
+name: TSetSpawn
+version: ${project.version}
+main: tsetspawn.TSetSpawn
+
+author: Mine_Alex | Tect.host
+api-version: '1.13'
+website: tect.host
+
+commands:
+  tsetspawn:
+    usage: /tss <command>
+    aliases:
+      - tss
+  setspawn:
+    usage: /setspawn <id>
+  spawn:
+    usage: /spawn

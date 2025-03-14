@@ -1,0 +1,16 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                       English messages                      │ #
+# │                   Translated by: Tect.host                  │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+messages:
+  no-perm: "<red>You do not have sufficient permissions.</red>"
+  only-player: "<red>Only players can execute this command.</red>"
+  invalid-spawn: "<red>The spawn is invalid.</red>"
+  not-exist: "<red>The spawn %spawn% does not exist.</red>"
+  invalid-id: "<red>The spawn ID is invalid.</red>"
+  spawn: "<green>The spawn %spawn% has been set.</green>"
+  reload: "<green>TSetSpawn reloaded successfully.</green>"
+  version: "<green>Version:</green> <yellow>%v%</yellow>"

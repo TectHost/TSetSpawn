@@ -1,0 +1,17 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                       Spanish messages                      │ #
+# │                       (Spanish, Spain)                      │ #
+# │                   Translated by: Tect.host                  │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+messages:
+  no-perm: "<red>No tienes permisos suficientes.</red>"
+  only-player: "<red>Solo los jugadores pueden ejecutar este comando.</red>"
+  invalid-spawn: "<red>El spawn es inválido.</red>"
+  not-exist: "<red>El spawn %spawn% no existe.</red>"
+  invalid-id: "<red>El ID del spawn es inválido.</red>"
+  spawn: "<green>El spawn %spawn% ha sido colocado.</green>"
+  reload: "<green>TSetSpawn recargado con éxito.</green>"
+  version: "<green>Versión:</green> <yellow>%v%</yellow>"
