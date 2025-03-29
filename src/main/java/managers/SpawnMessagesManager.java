@@ -23,7 +23,7 @@ public class SpawnMessagesManager {
 
     public void loadMessages() {
         FileConfiguration config = configFile.getConfig();
-        spawnMessages.clear();
+        clearMessages();
 
         if (config.contains("messages")) {
             for (String key : Objects.requireNonNull(config.getConfigurationSection("messages")).getKeys(false)) {
@@ -44,6 +44,11 @@ public class SpawnMessagesManager {
 
     public void reloadMessages() {
         configFile.reloadConfig();
+        clearMessages();
         loadMessages();
+    }
+
+    public void clearMessages() {
+        spawnMessages.clear();
     }
 }

@@ -4,7 +4,7 @@
   <groupId>tect.host</groupId>
   <artifactId>TSetSpawn</artifactId>
   <name>TSetSpawn</name>
-  <version>4.0.0</version>
+  <version>4.1.0</version>
   <build>
     <defaultGoal>clean package</defaultGoal>
     <resources>

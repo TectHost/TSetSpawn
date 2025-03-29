@@ -1,0 +1,16 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                         Join config                         │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+join:
+  # Teleports the player to the spawn on join
+  spawn-on-join: true
+  # ID of the spawn-on-join
+  spawn-on-join-id: 0
+
+  # Teleports the player to a spawn on first join
+  first-join-spawn: true
+  # ID of the first-join-spawn
+  first-join-spawn-id: 0

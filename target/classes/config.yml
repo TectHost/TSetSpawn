@@ -5,4 +5,25 @@
 # #################################################################
 
 general:
+  # The language file inside lang folder
   lang-file: "messages_en.yml"
+
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                        Modules config                       │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+modules:
+  # Enable/disable the messages module
+  messages: true
+  # Enable/disable the join module
+  join: true
+  # Enable/disable void module
+  void: true
+  # Enable/disable titles module
+  titles: true
+  # Enable/disable action bar module
+  actionbar: true
+  # Enable/disable permissions module
+  permissions: false
