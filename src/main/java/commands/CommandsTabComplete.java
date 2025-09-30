@@ -22,7 +22,7 @@ public class CommandsTabComplete implements TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String @NotNull [] args) {
         List<String> completions = new ArrayList<>();
 
-        if (args.length == 1) { // primer argumento (subcomandos)
+        if (args.length == 1) {
             if (utils.hasPerm(sender, "tss.reload")) completions.add("reload");
             if (utils.hasPerm(sender, "tss.version")) completions.add("version");
             if (utils.hasPerm(sender, "tss.menu")) completions.add("menu");

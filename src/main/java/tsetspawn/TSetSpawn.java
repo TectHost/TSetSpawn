@@ -88,6 +88,7 @@ public final class TSetSpawn extends JavaPlugin {
         utils.safeRun("vault.clear", () -> { if (vaultManager != null) vaultManager.clearSpawns(); });
         utils.safeRun("commands.clear", () -> { if (commandsManager != null) commandsManager.clearCommands(); });
         utils.safeRun("bans.clear", () -> { if (banManager != null) banManager.clearBans(); });
+        utils.safeRun("checkupdates.shutdown", () -> { if (configManager.isCheckUpdates()) CheckUpdates.shutdown(); });
         utils.safeRun("http.stop", () -> {
             if (httpServer != null) {
                 httpServer.stop();
