@@ -1,0 +1,51 @@
+name: TSetSpawn
+version: 4.2.0
+main: tsetspawn.TSetSpawn
+
+author: Mine_Alex | Tect.host
+api-version: '1.13'
+website: tect.host
+
+depend:
+  - PlaceholderAPI
+
+softdepend:
+  - Vault
+
+commands:
+  tsetspawn:
+    description: Reload the plugin (and other config options)
+    aliases:
+      - tss
+  setspawn:
+    description: Sets the spawn
+  spawn:
+    description: Teleports to the spawn
+  deletespawn:
+    description: Delete the spawn
+  spawnlist:
+    description: List all the spawns
+  spawnban:
+    description: Ban players from executing /spawn
+
+permissions:
+  tss.reload:
+    description: Permission to reload the plugin
+  tss.version:
+    description: Permission to view the version of the plugin
+  tss.menu:
+    description: Permission to see the menu
+  tss.config:
+    description: Permission to use config command
+  tss.setspawn:
+    description: Permission to set the spawn
+  tss.spawnlist:
+    description: Permission to execute spawnlist command
+  tss.admin:
+    description: Access to all admin commands
+  tss.admin.updates:
+    description: Receive notifications about new versions
+  tss.admin.delete:
+    description: Permission to execute /deletespawn
+  tss.admin.ban:
+    description: Permission to ban players from spawns

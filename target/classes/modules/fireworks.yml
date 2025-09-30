@@ -1,0 +1,20 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                     Per Spawn Fireworks                     │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+fireworks:
+  0:
+    colors: [RED, YELLOW]
+    fadeColors: [ORANGE]
+    flicker: true
+    trail: true
+    type: BALL_LARGE
+
+  1:
+    colors: [BLUE, WHITE]
+    fadeColors: [LIGHT_BLUE]
+    flicker: false
+    trail: true
+    type: BURST

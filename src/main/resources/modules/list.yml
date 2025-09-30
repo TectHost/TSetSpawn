@@ -1,0 +1,20 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                      Spawn List Module                      │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+# You need to restart the server if you enable/disable this option
+gui-enabled: false # Only available for 1.21+
+
+gui:
+  title: "<gray>Spawn List | Page %page%" # The "%page%" NEEDS to be in the last char!
+  close: "<red>Close"
+  previous: "<blue>Previous Page"
+  next: "<blue>Next Page"
+  spawn-name: "<yellow>Spawn ID: <green>%id%" # The "%id%" NEEDS to be in the last char!
+  world: "<gray>World: <reset>%world%"
+  x: "<gray>X: <reset>%x%"
+  y: "<gray>Y: <reset>%y%"
+  z: "<gray>Z: <reset>%z%"
+  error-id: "<red>Error: Failed to retrieve the spawn ID."

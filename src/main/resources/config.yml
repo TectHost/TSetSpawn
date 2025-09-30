@@ -1,0 +1,79 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                        General config                       │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+# Checks for updates on spigotmc.org
+check-updates: true
+
+general:
+  # The language file inside lang folder
+  lang-file: "messages_en.yml"
+  # The prefix of the plugin for the messages
+  prefix: "<dark_purple>TSetSpawn<dark_purple> <gold>></gold> "
+  # Enable/disable checks the location in /setspawn command
+  safe-location: true
+
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                        Modules config                       │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+# When activating/deactivating a module, you have to restart the server!
+modules:
+  # Enable/disable the messages module (messages when a player executes /spawn)
+  messages: true
+  # Enable/disable the join module (first join spawn and spawn on join
+  join: true
+  # Enable/disable void module (void to spawn in Y coordinate)
+  void: true
+  # Enable/disable titles module (titles when a player executes /spawn)
+  titles: true
+  # Enable/disable action bar module (actionbar when a player executes /spawn)
+  actionbar: true
+  # Enable/disable permissions module (permissions to go to the spawns)
+  permissions: false
+  # Enable/disable cooldown module
+  cooldown: true
+  # Enable/disable countdown module
+  countdown: true
+  # Enable/disable sounds module (play a sound when a player executes /spawn)
+  sounds: true
+  # Enable/disable particles module (show particles when a player executes /spawn)
+  particles: true
+  # Enable/disable fireworks module (show fireworks when a player executes /spawn)
+  fireworks: true
+  # Enable/disable respawn module (spawn on respawn)
+  respawn: true
+  # Enable/disable web module
+  web: false # You need an additional port to run this module (contact your hosting provider)
+  # Enable/disable GUI menu (only available for 1.21+)
+  gui: false
+  # Enable/disable /spawnlist command
+  spawn-list: true
+  # Enable/disable the spawn list GUI when execute "/spawn" (with no args)
+  spawn-gui: false # You NEED to have Spawn-list module enabled to use this!
+  # Enable/disable commands module (execute commands when executes /spawn)
+  commands: true
+  # Enable/disable animations (execute actions after teleporting to spawn)
+  animations: true
+  # Enable/disable the bans module
+  bans: false
+
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                         Plugin hooks                        │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+# When activating/deactivating a hook, you have to restart the server!
+# IMPORTANT! Make sure you have the necessary plugins to activate the hook!
+hooks:
+  # Enable/disable vault hook (economy cost for use /spawn)
+  vault: false # To enable this hook you need Vault + an economy plugin (e.g. EssentialsX)
+
+
+# Activate this option to get more information about errors
+debug: false

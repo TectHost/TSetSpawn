@@ -1,0 +1,76 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                      Animations Module                      │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+# Each entry under "animations" defines a sequence of animated steps
+# that are executed when a player spawns or triggers the event
+#
+# TAGS AND THEIR USAGE:
+#
+# [TITLE] <title>;<subtitle>
+#   - Displays a title and subtitle to the player
+#   - Example: [TITLE] <green>Welcome!</green>;<yellow>Enjoy your stay</yellow>
+#
+# [GM] <number>
+#   - Changes the player's gamemode
+#   - Example: [GM] 1 -> Sets the player to Creative mode
+#
+# [CHAT] <message>
+#   - Sends a chat message to the player
+#   - Example: [CHAT] <aqua>Welcome to the server!</aqua>
+#
+# [SOUND] <sound> <volume> <pitch>
+#   - Plays a sound at the player's location
+#   - Example: [SOUND] ENTITY_PLAYER_LEVELUP 1 1
+#
+# [MOVE] <axis> <amount>
+#   - Moves the player in a specific direction
+#   - Axis can be: X, Y, Z
+#   - Example: [MOVE] Y 5 → Moves the player up by 5 blocks
+#
+# [IF <condition>]
+#   - Begins a conditional block. Placeholders like %player_total_exp% can be used
+#   - Supported operators: ==, !=, >, <, >=, <=
+#   - Example: [IF %player_total_exp% >= 10]
+#
+# [ELSE]
+#   - Optional; defines the "else" clause for an IF block
+#
+# [ENDIF]
+#   - Ends the IF block
+#
+# [FOR <var> in <start>..<end>]
+#   - Repeats the nested actions for a fixed range
+#   - Example: [FOR i in 1..3]
+#       Repeats the inner block 3 times
+#
+# [ENDFOR]
+#   - Ends a FOR loop
+#
+# /<command>
+#   - Any regular Minecraft command. The system will execute it as console or player
+#   - Example: /give @p minecraft:diamond 1
+#
+# [CONSOLE] <command>
+#   - Executes a Minecraft command in the console
+#   - Example: [CONSOLE] say Hello from console!
+
+animations:
+  0:
+    - "[TITLE] <green>Welcome!</green>;<yellow>Enjoy the experience</yellow>"
+    - "[GM] 1"
+    - "[CHAT] <aqua>Getting you ready for the adventure...</aqua>"
+    - "[SOUND] ENTITY_PLAYER_LEVELUP 1 1"
+    - "[MOVE] Y 5"
+    - "[IF %player_total_exp% >= 10]"
+    - "[CHAT] <green>You have high XP! Bonus activated.</green>"
+    - "[ELSE]"
+    - "[CHAT] <red>Keep leveling up for more rewards.</red>"
+    - "[ENDIF]"
+    - "[FOR i in 1..3]"
+    - "[SOUND] ENTITY_ARROW_SHOOT 0.7 1"
+    - "[ENDFOR]"
+    - "/give @p minecraft:dirt 3"
+    - "[CONSOLE] give * diamond 1"

@@ -1,0 +1,29 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                         Join config                         │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+join:
+  # Teleports the player to the spawn on join
+  spawn-on-join: true
+  # ID of the spawn-on-join
+  spawn-on-join-id: 0
+
+  # Teleports the player to a spawn on first join
+  first-join-spawn: true
+  # ID of the first-join-spawn
+  first-join-spawn-id: 0
+
+# Join messages (only for 1.16+)
+messages:
+  # Join message (for disable it leave it empty, check the next line)
+  # join: ""
+  join: "<gray>[<green>+</green><gray>] <green>%player%</green><gray> entered the server.</gray>" # You can use %unique% placeholder here too
+  # Quit message (for disable it leave it empty, check the next line)
+  # quit: ""
+  quit: "<gray>[<red>-</red><gray>] <red>%player%</red><gray> left the server.</gray>" # You can use %unique% placeholder here too
+  # First join message (for disable it leave it empty, check the next line)
+  # This will be sent when a player enters for the first time.
+  # first-join: ""
+  first-join: "<gray>[<green>+</green><gray>] <green>%player%</green><gray> entered the server for the first time. (</gray><dark_purple>#%unique%</dark_purple><gray>)</gray>"

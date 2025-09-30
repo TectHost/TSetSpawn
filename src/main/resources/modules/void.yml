@@ -1,0 +1,24 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                         Void config                         │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+void:
+  # The ID of the spawn to which the player will be teleported when below the indicated layer
+  id: 0
+  # The layer (change it if you are not in 1.18+)
+  layer: -64
+
+# Options for the void event
+options:
+  # Enable/disable send messages on teleport to the spawn
+  send-messages: true
+  # Enable/disable send titles on teleport to the spawn
+  send-title: true
+  # Enable/disable send action bar on teleport to the spawn
+  send-actionbar: true
+  # Enable/disable send sound on teleport to the spawn
+  send-sound: true
+  # Enable/disable send particle on teleport to the spawn
+  send-particle: true

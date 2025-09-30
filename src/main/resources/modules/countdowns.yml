@@ -1,0 +1,32 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                     Per Spawn Countdowns                    │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+countdowns:
+  0:
+    duration: 5.0
+    cancel-on-move: true
+    cancel-sound: "ENTITY_IRON_GOLEM_HURT"
+    messages:
+      5: "<gray>[5s]</gray> <dark_gray>Teleporting...</dark_gray>"
+      4: "<gray>[4s]</gray> <dark_gray>Teleporting...</dark_gray>"
+      3: "<gray>[3s]</gray> <dark_gray>Teleporting...</dark_gray>"
+      2: "<gray>[2s]</gray> <dark_gray>Teleporting...</dark_gray>"
+      1: "<gray>[1s]</gray> <dark_gray>Teleporting...</dark_gray>"
+      0: "<gray>[GO]</gray> <dark_gray>Teleporting now.</dark_gray>"
+
+  1:
+    duration: 3.0
+    cancel-on-move: false
+    # You can leave the sound empty to deactivate it
+    cancel-sound: ""
+    messages:
+      # <Second>: "<Message>"
+      3: "<aqua>Teleport in 3 seconds...</aqua>"
+      2: "<aqua>2 seconds left...</aqua>"
+      1: "<aqua>1 second left...</aqua>"
+      0: "<aqua>Teleporting now...</aqua>"
+
+  # Add as many spawns as you want, each with its own settings

@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TSetSpawn Manager</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #6c757d;
+            font-weight: 400;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 360px 2fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .form-section {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .config-section {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .form-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #495057;
+            font-size: 0.9rem;
+        }
+
+        .required-asterisk {
+            color: #dc3545;
+            margin-left: 2px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            color: #495057;
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #adb5bd;
+        }
+
+        .coordinates-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .rotation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .coordinates-grid input,
+        .rotation-grid input {
+            padding: 0.75rem 1rem;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            color: #495057;
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .coordinates-grid input:focus,
+        .rotation-grid input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            background: #4a90e2;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: #357abd;
+        }
+
+        .submit-btn:disabled {
+            background: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        .reload-btn {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            background: #4CAF50;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .reload-btn:hover {
+            background: #388e3c;
+        }
+
+        .reload-btn:disabled {
+            background: #a5d6a7;
+            cursor: not-allowed;
+        }
+
+        .config-separator {
+            height: 1px;
+            background: #e9ecef;
+            margin: 1.5rem 0;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .config-single {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-item:hover {
+            background: #f1f3f4;
+            border-color: #ced4da;
+        }
+
+        .toggle-label {
+            font-size: 0.85rem;
+            color: #495057;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background: #ced4da;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: #4a90e2;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(16px);
+        }
+
+        .table-section {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .table-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8f9fa;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .spawn-count {
+            background: #e9ecef;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #495057;
+            border-bottom: 1px solid #e9ecef;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f3f4;
+            font-size: 0.9rem;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .coordinate-value {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            background: #f1f3f4;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #495057;
+        }
+
+        .world-badge {
+            background: #4a90e2;
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .delete-btn:disabled {
+            background: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #adb5bd;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            gap: 0.75rem;
+            color: #6c757d;
+        }
+
+        .loading-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e9ecef;
+            border-top: 2px solid #4a90e2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            color: #fff;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .notification.success {
+            background: #28a745;
+        }
+
+        .notification.error {
+            background: #dc3545;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .left-column {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .coordinates-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rotation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .table th,
+            .table td {
+                padding: 0.75rem 1rem;
+            }
+
+            .table {
+                min-width: 700px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>TSetSpawn Manager</h1>
+        <p>Manage spawns on your Minecraft server</p>
+    </div>
+
+    <div class="main-content">
+        <div class="left-column">
+            <div class="form-section">
+                <div class="form-title">
+                    New Spawn
+                </div>
+
+                <form id="spawnForm">
+                    <div class="form-group">
+                        <label for="id">Spawn ID</label>
+                        <input type="text" id="id" placeholder="Ex: 0" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="world">World<span class="required-asterisk">*</span></label>
+                        <input type="text" id="world" placeholder="Ex: world" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Coordinates<span class="required-asterisk">*</span></label>
+                        <div class="coordinates-grid">
+                            <input type="number" id="x" placeholder="X" step="any" required />
+                            <input type="number" id="y" placeholder="Y" step="any" required />
+                            <input type="number" id="z" placeholder="Z" step="any" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rotation<span class="required-asterisk">*</span></label>
+                        <div class="rotation-grid">
+                            <input type="number" id="yaw" placeholder="Yaw" step="any" required />
+                            <input type="number" id="pitch" placeholder="Pitch" step="any" required />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        Add Spawn
+                    </button>
+                </form>
+            </div>
+
+            <div class="config-section">
+                <div class="form-title">
+                    Configuration
+                </div>
+
+                <div class="toggle-item">
+                    <span class="toggle-label">check updates</span>
+                    <div class="toggle-switch" data-module="check-updates"></div>
+                </div>
+
+                <div class="config-separator"></div>
+
+                <div class="form-group">
+                    <label for="messageFile">Message File</label>
+                    <input type="text" id="messageFile" placeholder="Enter message file path" />
+                </div>
+                <div class="form-group">
+                    <label for="prefix">Prefix</label>
+                    <input type="text" id="prefix" placeholder="Enter the plugin prefix" />
+                </div>
+                <div class="toggle-item">
+                    <span class="toggle-label">safe location</span>
+                    <div class="toggle-switch" data-module="safe-location"></div>
+                </div>
+
+                <div class="config-separator"></div>
+
+                <div class="form-group">
+                    <label style="margin-bottom: 1rem;">Module Configuration</label>
+                    <div class="config-grid">
+                        <div class="toggle-item">
+                            <span class="toggle-label">actionbar</span>
+                            <div class="toggle-switch" data-module="actionbar"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">animations</span>
+                            <div class="toggle-switch" data-module="animations"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">bans</span>
+                            <div class="toggle-switch" data-module="bans"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">commands</span>
+                            <div class="toggle-switch" data-module="commands"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">cooldown</span>
+                            <div class="toggle-switch" data-module="cooldown"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">countdown</span>
+                            <div class="toggle-switch" data-module="countdown"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">fireworks</span>
+                            <div class="toggle-switch" data-module="fireworks"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">gui</span>
+                            <div class="toggle-switch" data-module="gui"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">join</span>
+                            <div class="toggle-switch" data-module="join"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">messages</span>
+                            <div class="toggle-switch" data-module="messages"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">particles</span>
+                            <div class="toggle-switch" data-module="particles"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">permissions</span>
+                            <div class="toggle-switch" data-module="permissions"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">respawn</span>
+                            <div class="toggle-switch" data-module="respawn"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">sounds</span>
+                            <div class="toggle-switch" data-module="sounds"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">spawn gui</span>
+                            <div class="toggle-switch" data-module="spawn-gui"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">spawn list</span>
+                            <div class="toggle-switch" data-module="spawn-list"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">titles</span>
+                            <div class="toggle-switch" data-module="titles"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">void</span>
+                            <div class="toggle-switch" data-module="void"></div>
+                        </div>
+                        <div class="toggle-item">
+                            <span class="toggle-label">web</span>
+                            <div class="toggle-switch" data-module="web"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-separator"></div>
+
+                <div class="form-group">
+                    <label style="margin-bottom: 1rem;">Hooks</label>
+                    <div class="config-single">
+                        <div class="toggle-item">
+                            <span class="toggle-label">vault</span>
+                            <div class="toggle-switch" data-module="vault"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-separator"></div>
+
+                <div class="form-group">
+                    <label style="margin-bottom: 1rem;">Others</label>
+                    <div class="config-single">
+                        <div class="toggle-item">
+                            <span class="toggle-label">debug</span>
+                            <div class="toggle-switch" data-module="debug"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="config-single">
+                    <button class="reload-btn" onclick="reloadPlugin()" id="reloadBtn">
+                        <i class="fas fa-rotate-right"></i> Reload Plugin
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">Registered Spawns</div>
+                <div class="spawn-count" id="spawnCount">0 spawns</div>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>World</th>
+                        <th>X</th>
+                        <th>Y</th>
+                        <th>Z</th>
+                        <th>Yaw</th>
+                        <th>Pitch</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="spawnList">
+                    <tr>
+                        <td colspan="8" class="loading">
+                            <div class="loading-spinner"></div>
+                            Loading spawns...
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => notification.classList.add('show'), 100);
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => document.body.removeChild(notification), 300);
+        }, 3000);
+    }
+
+    function updateSpawnCount(count) {
+        const countElement = document.getElementById('spawnCount');
+        countElement.textContent = `${count} spawn${count !== 1 ? 's' : ''}`;
+    }
+
+    async function reloadPlugin() {
+        const command = `tss reload`;
+
+        try {
+            const res = await fetch('/command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                    'Accept': 'application/json'
+                },
+                body: command
+            });
+
+            if (res.ok) {
+                showNotification(`Plugin reloaded`);
+                setTimeout(fetchSpawns, 300);
+            } else {
+                const errorText = await res.text();
+                throw new Error(`HTTP ${res.status}: ${errorText}`);
+            }
+        } catch (e) {
+            showNotification(`Error reloading the plugin: ${e.message}`, 'error');
+            console.error('Error reloading plugin:', e);
+        }
+    }
+
+    async function deleteSpawn(spawnId) {
+        const command = `deletespawn ${spawnId}`;
+
+        try {
+            const res = await fetch('/command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                    'Accept': 'application/json'
+                },
+                body: command
+            });
+
+            if (res.ok) {
+                showNotification(`Spawn ${spawnId} deleted successfully`);
+                setTimeout(fetchSpawns, 300);
+            } else {
+                const errorText = await res.text();
+                throw new Error(`HTTP ${res.status}: ${errorText}`);
+            }
+        } catch (e) {
+            showNotification(`Error deleting spawn ${spawnId}: ${e.message}`, 'error');
+            console.error('Delete spawn error:', e);
+        }
+    }
+
+    async function fetchSpawns() {
+        try {
+            const res = await fetch('/spawns');
+            if (!res.ok) throw new Error('Error loading spawns');
+            const spawns = await res.json();
+            const tbody = document.getElementById('spawnList');
+            tbody.innerHTML = '';
+
+            const spawnKeys = Object.keys(spawns);
+            updateSpawnCount(spawnKeys.length);
+
+            if (spawnKeys.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>No spawns registered</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #adb5bd;">Add your first spawn </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            for (const key in spawns) {
+                const spawn = spawns[key];
+                const spawnId = spawn.id || spawn.name || key;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${spawnId}</strong></td>
+                    <td><span class="world-badge">${spawn.world}</span></td>
+                    <td><span class="coordinate-value">${Math.round(spawn.x)}</span></td>
+                    <td><span class="coordinate-value">${Math.round(spawn.y)}</span></td>
+                    <td><span class="coordinate-value">${Math.round(spawn.z)}</span></td>
+                    <td><span class="coordinate-value">${Math.round(spawn.yaw)}°</span></td>
+                    <td><span class="coordinate-value">${Math.round(spawn.pitch)}°</span></td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteSpawn('${spawnId}')">
+                            <i class="fas fa-trash"></i>
+                            Delete
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            }
+        } catch (e) {
+            showNotification('Unable to load spawns', 'error');
+            console.error(e);
+            const tbody = document.getElementById('spawnList');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>Error loading spawns</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; color: #adb5bd;">Verify the connection to the server</div>
+                    </td>
+                </tr>
+            `;
+            updateSpawnCount(0);
+        }
+    }
+
+    async function fetchModules() {
+        try {
+            const res = await fetch('/modules');
+            if (!res.ok) throw new Error('Error loading modules');
+            const modules = await res.json();
+
+            console.log('Loaded modules:', modules);
+
+            if (modules['lang-file']) {
+                document.getElementById('messageFile').value = modules['lang-file'];
+            }
+
+            if (modules['prefix']) {
+                document.getElementById('prefix').value = modules['prefix'];
+            }
+
+            document.querySelectorAll('.toggle-switch').forEach(toggle => {
+                const module = toggle.dataset.module;
+                const isEnabled = modules[module] === true;
+                toggle.classList.toggle('active', isEnabled);
+            });
+
+        } catch (e) {
+            showNotification('Unable to load modules configuration', 'error');
+            console.error('Error loading modules:', e);
+        }
+    }
+
+    document.getElementById('spawnForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const submitBtn = e.target.querySelector('.submit-btn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Adding...';
+        submitBtn.disabled = true;
+
+        const idValue = document.getElementById('id').value.trim();
+        const newSpawn = {
+            world: document.getElementById('world').value.trim(),
+            x: parseFloat(document.getElementById('x').value),
+            y: parseFloat(document.getElementById('y').value),
+            z: parseFloat(document.getElementById('z').value),
+            yaw: parseFloat(document.getElementById('yaw').value),
+            pitch: parseFloat(document.getElementById('pitch').value),
+        };
+
+        if (idValue) {
+            newSpawn.id = parseInt(idValue, 10);
+        }
+
+        try {
+            const res = await fetch('/spawns', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newSpawn)
+            });
+            if (!res.ok) throw new Error('Error when adding spawn');
+
+            showNotification(`Spawn ${idValue || 'new'} added successfully!`);
+            fetchSpawns();
+            e.target.reset();
+        } catch (e) {
+            showNotification('Error adding spawn', 'error');
+            console.error(e);
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    document.getElementById('messageFile').addEventListener('blur', async (e) => {
+        const value = e.target.value.trim();
+        if (!value) return;
+
+        const command = `tss config lang-file ${value}`;
+
+        try {
+            const res = await fetch('/command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                    'Accept': 'application/json'
+                },
+                body: command
+            });
+
+            if (res.ok) {
+                showNotification('Message file updated');
+            } else {
+                const errorText = await res.text();
+                throw new Error(`HTTP ${res.status}: ${errorText}`);
+            }
+        } catch (e) {
+            showNotification(`Error updating message file: ${e.message}`, 'error');
+            console.error('Message file error:', e);
+        }
+    });
+
+    document.querySelectorAll('.toggle-switch').forEach(toggle => {
+        toggle.addEventListener('click', async () => {
+            const module = toggle.dataset.module;
+            const isActive = toggle.classList.contains('active');
+            const newState = !isActive;
+            const command = `tss config ${module} ${newState}`;
+
+            try {
+                const res = await fetch('/command', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                        'Accept': 'application/json'
+                    },
+                    body: command
+                });
+
+                if (res.ok) {
+                    toggle.classList.toggle('active', newState);
+                    showNotification(`${module} ${newState ? 'enabled' : 'disabled'}`);
+                } else {
+                    const errorText = await res.text();
+                    throw new Error(`HTTP ${res.status}: ${errorText}`);
+                }
+            } catch (e) {
+                showNotification(`Error updating ${module}: ${e.message}`, 'error');
+                console.error('Toggle error:', e);
+            }
+        });
+    });
+
+    fetchSpawns();
+    fetchModules();
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                          GUI config                         │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+# General configuration of the menu
+menu:
+  # The GUI title
+  title: "<aqua>Main Menu"
+  # Messages
+  close-message: "<red>You closed the menu."
+  close-button: "<red>Close menu"
+  no-modules: "<red>The 'modules' section was not found in gui.yml."
+
+
+modules:
+  messages:
+    material: PAPER
+    name: "<aqua>✉ <bold><white>Custom Messages</bold>"
+    description:
+      - "<gray>➜ Display unique messages"
+      - "<gray>➜ to players on key events."
+    slot: 11
+
+  join:
+    material: OAK_DOOR
+    name: "<green>⏩ <bold><white>Join Teleport</bold>"
+    description:
+      - "<gray>➜ Instantly sends players"
+      - "<gray>➜ to spawn on join."
+    slot: 12
+
+  void:
+    material: ENDER_PEARL
+    name: "<light_purple>⬇ <bold><white>Void Protection</bold>"
+    description:
+      - "<gray>➜ Detects void falls"
+      - "<gray>➜ and returns to spawn."
+    slot: 14
+
+  titles:
+    material: NAME_TAG
+    name: "<gold>🏷 <bold><white>Visual Titles</bold>"
+    description:
+      - "<gray>➜ Shows titles when using"
+      - "<gray>➜ /spawn or on join."
+    slot: 15
+
+  actionbar:
+    material: BOOK
+    name: "<blue>☰ <bold><white>Quick Notifications</bold>"
+    description:
+      - "<gray>➜ Displays actionbar alerts"
+      - "<gray>➜ in a subtle way."
+    slot: 20
+
+  permissions:
+    material: LIGHTNING_ROD
+    name: "<yellow>⚡ <bold><white>Permission Control</bold>"
+    description:
+      - "<gray>➜ Manage access"
+      - "<gray>➜ using permissions."
+    slot: 21
+
+  cooldown:
+    material: CLOCK
+    name: "<red>⏳ <bold><white>Cooldown</bold>"
+    description:
+      - "<gray>➜ Sets a waiting time"
+      - "<gray>➜ before using /spawn again."
+    slot: 22
+
+  countdown:
+    material: COMPASS
+    name: "<aqua>⏱ <bold><white>Countdown</bold>"
+    description:
+      - "<gray>➜ Applies a countdown"
+      - "<gray>➜ before teleporting."
+    slot: 23
+
+  sounds:
+    material: NOTE_BLOCK
+    name: "<light_purple>♪ <bold><white>Sound Effects</bold>"
+    description:
+      - "<gray>➜ Plays sounds"
+      - "<gray>➜ during plugin actions."
+    slot: 24
+
+  particles:
+    material: FIRE_CHARGE
+    name: "<gold>✦ <bold><white>Particle Effects</bold>"
+    description:
+      - "<gray>➜ Generates particles"
+      - "<gray>➜ when teleporting."
+    slot: 29
+
+  fireworks:
+    material: FIREWORK_ROCKET
+    name: "<red>🎆 <bold><white>Fireworks</bold>"
+    description:
+      - "<gray>➜ Launches a firework show"
+      - "<gray>➜ when you arrive at spawn."
+    slot: 30
+
+  respawn:
+    material: TOTEM_OF_UNDYING
+    name: "<green>↻ <bold><white>Auto Respawn</bold>"
+    description:
+      - "<gray>➜ Instantly teleports you"
+      - "<gray>➜ to spawn after death."
+    slot: 31
+
+  web:
+    material: COMMAND_BLOCK
+    name: "<blue>🌐 <bold><white>Web/API Integration</bold>"
+    description:
+      - "<gray>➜ Connects web features"
+      - "<gray>➜ or external APIs."
+    slot: 32
+
+  gui:
+    material: CHEST
+    name: "<gold>☰ <bold><white>Graphical Interface</bold>"
+    description:
+      - "<gray>➜ Enables custom"
+      - "<gray>➜ visual menus."
+    slot: 33

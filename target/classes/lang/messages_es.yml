@@ -1,0 +1,79 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                       Spanish messages                      │ #
+# │                       (Spanish, Spain)                      │ #
+# │                   Translated by: Tect.host                  │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+messages:
+  no-perm: "%prefix%<red>No tienes permisos suficientes.</red>"
+  only-player: "%prefix%<red>Solo los jugadores pueden ejecutar este comando.</red>"
+  invalid-spawn: "%prefix%<red>El spawn es inválido.</red>"
+  not-exist: "%prefix%<red>El spawn %spawn% no existe.</red>"
+  invalid-id: "%prefix%<red>El ID del spawn es inválido.</red>"
+  spawn: "%prefix%<green>El spawn %spawn% ha sido colocado.</green>"
+  reload: "%prefix%<green>TSetSpawn recargado con éxito.</green>"
+  version: "%prefix%<green>Versión:</green> <yellow>%v%</yellow>"
+  cooldown: "%prefix%<red>¡Este comando está en cooldown. Prueba de nuevo en </red><white>%seconds%</white><red> segundos!</red>"
+  countdown: "%prefix%<red>¡Te has movido! El teletransporte se ha cancelado.</red>"
+  teleport-success-other: "%prefix%Has teletransportado con éxito a %target% al spawn."
+  you-were-teleported: "%prefix%Has sido teletransportado por %player% al spawn."
+  player-not-found: "%prefix%Jugador no encontrado. Por favor verifica el nombre e inténtalo de nuevo."
+  spawn-deleted: "%prefix%<green>El spawn <yellow>%spawn%</yellow> ha sido eliminado correctamente.</green>"
+  all-spawns-deleted: "%prefix%<green>Todos los spawns han sido eliminados.</green>"
+  already-exists: "%prefix%<red>El spawn con ID %spawn% ya existe. ¿Quieres sobreescribirlo?</red><newline><green><b><click:run_command:'/setspawn %spawn% confirm'><hover:show_text:'<green>Clic aquí para confirmar.'>[YES]</hover></click></b></green> <red><b><hover:show_text:'<red>Clic aquí para cancelar.'>[NO]</hover></b></red>"
+  config-usage: "%prefix%<red>Usage: /tss config <key> <value>"
+  config-set: "%prefix%<green>Set <yellow>%key%</yellow> to <blue>%value%</blue></green>"
+  config-invalid-key: "%prefix%<red>Invalid key: <yellow>%key%</yellow></red>"
+  config-invalid-value: "%prefix%<red>Invalid value. Use true/false or a recognized value.</red>"
+  list-header: "%prefix%<green>Lista de spawns:</green>"
+  no-spawns: "%prefix%<red>No hay spawns registrados.</red>"
+  spawn-list: "%prefix%<yellow><click:run_command:'/spawn %id%'><hover:show_text:'<green>Clic aquí para teletransportarte.'>- Spawn (%id%) en (%world%) -> %x, %y, %z</yellow>"
+  safe-location: "%prefix%<red>¡No puedes establecer el spawn en una ubicación peligrosa!</red>"
+  update: "%prefix%<red>¡Ya está disponible una nueva actualización del plugin! Última: <amarillo>%latestVersion% <rojo>Tienes: <yellow>%version%</yellow></red>"
+  banned: "<red>No puedes teletransportarte al spawn <yellow>%spawn%</yellow> porque estás baneado.</red>"
+
+# Puedes eliminar esto si no tienes el módulo de baneos activado en el config.yml
+spawnban:
+  usage-header: "%prefix%<yellow>Comandos disponibles:</yellow>"
+  usage-list: "%prefix%<white>/spawnban list <spawnId></white>"
+  usage-add: "%prefix%<white>/spawnban add <spawnId> <jugador></white>"
+  usage-remove: "%prefix%<white>/spawnban remove <spawnId> <jugador></white>"
+  usage-clear: "%prefix%<white>/spawnban clear <spawnId></white>"
+
+  list-usage: "%prefix%<yellow>Uso:</yellow> /spawnban list <spawnId>"
+  add-usage: "%prefix%<yellow>Uso:</yellow> /spawnban add <spawnId> <jugador>"
+  remove-usage: "%prefix%<yellow>Uso:</yellow> /spawnban remove <spawnId> <jugador>"
+  clear-usage: "%prefix%<yellow>Uso:</yellow> /spawnban clear <spawnId>"
+
+  invalid-id: "%prefix%<red>El spawnId debe ser un número.</red>"
+  no-bans: "%prefix%<green>No hay jugadores baneados en el spawn <yellow>%spawn%</yellow>.</green>"
+  list: "%prefix%<yellow>Jugadores baneados en spawn <white>%spawn%</white>: %players%</yellow>"
+
+  player-not-found: "%prefix%<red>Jugador no encontrado.</red>"
+  already-banned: "%prefix%<yellow>El jugador ya estaba baneado de ese spawn.</yellow>"
+  banned: "%prefix%<green>Jugador <yellow>%player%</yellow> baneado de spawn <yellow>%spawn%</yellow>.</green>"
+
+  not-banned: "%prefix%<yellow>Ese jugador no estaba baneado de ese spawn.</yellow>"
+  unbanned: "%prefix%<green>Jugador <yellow>%player%</yellow> desbaneado de spawn <yellow>%spawn%</yellow>.</green>"
+
+  cleared: "%prefix%<green>Se han eliminado <yellow>%count%</yellow> baneos del spawn <yellow>%spawn%</yellow>.</green>"
+
+economy:
+  no-money-message: "%prefix%<red>No tienes suficiente dinero para usar este comando.</red>"
+  paid-message: "%prefix%<green>Has pagado <yellow>$%amount%</yellow> para usar este comando.</green>"
+
+help:
+  - "<dark_purple><bold>Ayuda de TSetSpawn</bold></dark_purple>"
+  - ""
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/tss reload'>/tss reload</click></hover> <gray>- Recarga las configuraciones del plugin</gray>"
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/tss version'>/tss version</click></hover> <gray>- Muestra la versión del plugin</gray>"
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/tss menu'>/tss menu</click></hover> <gray>- Abre el menú GUI</gray>"
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/tss config '>/tss config <clave> <valor></click></hover> <gray>- Cambia un valor de la configuración</gray>"
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/setspawn '>/setspawn [id]</click></hover> <gray>- Crea un spawn</gray>"
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/spawn '>/spawn [id] [jugador|all]</click></hover> <gray>- Teletransporta al spawn</gray>"
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/spawnlist'>/spawnlist</click></hover> <gray>- Abre el menú GUI con todos los spawns (si está habilitado)</gray>"
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/spawn'>/spawn</click></hover> <gray>- Abre el menú GUI con todos los spawns (si está habilitado)</gray>"
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/deletespawn '>/deletespawn</click></hover> <gray>- Elimina un spawn</gray>"
+  - "<yellow><hover:show_text:'<gray>Haz clic para ejecutar el comando</gray>'><click:suggest_command:'/spawnban '>/spawnban [list|add|remove|clear] [id] [jugador]</click></hover> <gray>- Banea jugadores de un spawn</gray>"

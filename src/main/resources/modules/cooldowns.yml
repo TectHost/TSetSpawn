@@ -1,0 +1,16 @@
+# #################################################################
+# ┌─────────────────────────────────────────────────────────────┐ #
+# │                       Cooldowns config                      │ #
+# └─────────────────────────────────────────────────────────────┘ #
+# #################################################################
+
+# Cooldown settings for each spawn ID (in seconds)
+# You can use decimal values like 2.5 or 4.75
+# If a spawn ID is not listed here, its cooldown will be 0 by default
+
+cooldowns:
+  0: 3.0      # Spawn ID 0 has a 3 seconds cooldown
+  1: 5.5      # Spawn ID 1 has a 5.5 seconds cooldown
+  2: 0        # Spawn ID 2 has no cooldown
+  3: 10.25    # Spawn ID 3 has a 10.25 second cooldown
+              # Spawn ID 4 has no cooldown
