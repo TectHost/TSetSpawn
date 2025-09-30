@@ -17,6 +17,7 @@ managers\JoinManager.class
 managers\ConfigManager.class
 hook\VaultHook.class
 commands\DeleteSpawnCommand.class
+commands\CommandsTabComplete.class
 managers\ActionBarManager.class
 utils\SpawnHttpServer.class
 utils\Placeholders.class

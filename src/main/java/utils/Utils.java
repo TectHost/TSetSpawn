@@ -11,10 +11,12 @@ import org.jetbrains.annotations.Nullable;
 import tsetspawn.TSetSpawn;
 
 public class Utils {
+    private final TSetSpawn plugin;
     private final MessagesManager messagesManager;
     private final TranslateColors translateColors;
 
     public Utils(@NotNull TSetSpawn plugin) {
+        this.plugin = plugin;
         this.translateColors = plugin.getTranslateColors();
         this.messagesManager = plugin.getMessagesManager();
     }
@@ -61,5 +63,14 @@ public class Utils {
                 || type == Material.SOUL_FIRE
                 || type == Material.MAGMA_BLOCK
                 || type == Material.CACTUS;
+    }
+
+    public void safeRun(String name, Runnable r) {
+        try {
+            r.run();
+        } catch (Throwable t) {
+            plugin.getLogger().warning("Error en " + name + ": " + t.getMessage());
+            t.printStackTrace();
+        }
     }
 }

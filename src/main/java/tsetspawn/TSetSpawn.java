@@ -67,22 +67,33 @@ public final class TSetSpawn extends JavaPlugin {
     public void onDisable() {
         getLogger().info("Stopping TSetSpawn...");
 
-        getSpawnsManager().clearSpawns();
-        if (spawnMessagesManager != null) spawnMessagesManager.clearMessages();
-        if (titlesManager != null) titlesManager.clearTitles();
-        if (actionBarManager != null) actionBarManager.clearActionBar();
-        if (permissionsManager != null) permissionsManager.clearPermissions();
-        if (cooldownHandler != null) cooldownHandler.clear();
-        if (cooldownManager != null) cooldownManager.clear();
-        if (countdownHandler != null) countdownHandler.cancelAllCountdowns();
-        if (countdownManager != null) countdownManager.clearCountdowns();
-        if (soundsManager != null) soundsManager.clearSounds();
-        if (particlesManager != null) particlesManager.clearParticles();
-        if (fireworksManager != null) fireworksManager.clear();
-        if (httpServer != null) httpServer.stop();
-        if (vaultManager != null) vaultManager.clearSpawns();
-        if (commandsManager != null) commandsManager.clearCommands();
-        if (banManager != null) banManager.clearBans();
+        try {
+            getServer().getScheduler().cancelTasks(this);
+        } catch (Exception e) {
+            getLogger().warning("Error cancelando tareas: " + e.getMessage());
+        }
+
+        utils.safeRun("clearSpawns", () -> { if (spawnsManager != null) spawnsManager.clearSpawns(); });
+        utils.safeRun("spawnMessages.clear", () -> { if (spawnMessagesManager != null) spawnMessagesManager.clearMessages(); });
+        utils.safeRun("titles.clear", () -> { if (titlesManager != null) titlesManager.clearTitles(); });
+        utils.safeRun("actionBar.clear", () -> { if (actionBarManager != null) actionBarManager.clearActionBar(); });
+        utils.safeRun("permissions.clear", () -> { if (permissionsManager != null) permissionsManager.clearPermissions(); });
+        utils.safeRun("cooldownHandler.clear", () -> { if (cooldownHandler != null) cooldownHandler.clear(); });
+        utils.safeRun("cooldownManager.clear", () -> { if (cooldownManager != null) cooldownManager.clear(); });
+        utils.safeRun("countdownHandler.cancel", () -> { if (countdownHandler != null) countdownHandler.cancelAllCountdowns(); });
+        utils.safeRun("countdownManager.clear", () -> { if (countdownManager != null) countdownManager.clearCountdowns(); });
+        utils.safeRun("sounds.clear", () -> { if (soundsManager != null) soundsManager.clearSounds(); });
+        utils.safeRun("particles.clear", () -> { if (particlesManager != null) particlesManager.clearParticles(); });
+        utils.safeRun("fireworks.clear", () -> { if (fireworksManager != null) fireworksManager.clear(); });
+        utils.safeRun("vault.clear", () -> { if (vaultManager != null) vaultManager.clearSpawns(); });
+        utils.safeRun("commands.clear", () -> { if (commandsManager != null) commandsManager.clearCommands(); });
+        utils.safeRun("bans.clear", () -> { if (banManager != null) banManager.clearBans(); });
+        utils.safeRun("http.stop", () -> {
+            if (httpServer != null) {
+                httpServer.stop();
+                httpServer = null;
+            }
+        });
 
         getLogger().warning("TSetSpawn Stopped!");
     }
@@ -93,6 +104,7 @@ public final class TSetSpawn extends JavaPlugin {
 
     private void loadCommands() {
         Objects.requireNonNull(this.getCommand("tsetspawn")).setExecutor(new Commands(this));
+        Objects.requireNonNull(getCommand("tsetspawn")).setTabCompleter(new CommandsTabComplete(getUtils()));
         Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new SetSpawn(this, spawnsManager));
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(spawn);
         Objects.requireNonNull(this.getCommand("deletespawn")).setExecutor(new DeleteSpawnCommand(this));
@@ -102,6 +114,7 @@ public final class TSetSpawn extends JavaPlugin {
         translateColors = new TranslateColors(this);
         this.utils = new Utils(this);
         DebugLogger.init(this);
+        new org.bstats.bukkit.Metrics(this, 27412);
     }
 
     private void loadConfigFiles() {
@@ -200,7 +213,17 @@ public final class TSetSpawn extends JavaPlugin {
                         HtmlManager htmlManager = new HtmlManager(this);
 
                         httpServer = new SpawnHttpServer(this, spawnDataService, htmlManager);
-                        httpServer.start();
+
+                        getServer().getScheduler().runTaskAsynchronously(this, () -> {
+                            try {
+                                httpServer.start();
+                                getLogger().info("HTTP server started.");
+                            } catch (Exception e) {
+                                getLogger().severe("Error enabling HTTP server: " + e.getMessage());
+                                e.printStackTrace();
+                                httpServer = null;
+                            }
+                        });
                     }
                 },
                 () -> {
@@ -213,7 +236,14 @@ public final class TSetSpawn extends JavaPlugin {
                 () -> { if (config.isCheckUpdates()) CheckUpdates.check(getLogger(), getDescription().getVersion(), version -> lastVersion = version); }
         );
 
-        moduleInitializers.forEach(Runnable::run);
+        moduleInitializers.forEach(init -> {
+            try {
+                init.run();
+            } catch (Throwable t) {
+                getLogger().severe("Module initialization error: " + t.getMessage());
+                t.printStackTrace();
+            }
+        });
     }
 
     public BanManager getBanManager() {return banManager;}
